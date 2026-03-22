@@ -15,7 +15,7 @@
 
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="~/assets/style.css">
-
+    <link href="~/assets/toastr/toastr.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -311,6 +311,8 @@
     <script src="../assets/js/plugins/plugins.js"></script>
     <!-- Active js -->
     <script src="../assets/js/active.js"></script>
+    <script src="~/assets/toastr/toastr.min.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 
 </html>

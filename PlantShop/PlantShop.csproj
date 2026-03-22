@@ -23,7 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shop\" />
+    <Folder Include="Views\Checkout\" />
+    <Folder Include="Views\Account\" />
   </ItemGroup>
 
 </Project>
