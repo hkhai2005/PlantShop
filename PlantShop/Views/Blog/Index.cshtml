@@ -6,7 +6,7 @@
     <!-- ##### Breadcrumb Area Start ##### -->
     <div class="breadcrumb-area">
         <!-- Top Breadcrumb Area -->
-        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(img/bg-img/24.jpg);">
+    <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(../assets/img/bg-img/24.jpg);">
             <h2>BLOG DEFAULT</h2>
         </div>
 
@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-12 col-md-8">
                     <div class="row">
-                        @foreach(var item in Model)
+                    @foreach(var item in Model)
                     {
                         string ssUrl = $"/blog/{item.Alias}-{item.BlogId}.html";
                         <!-- Single Blog Post Area -->

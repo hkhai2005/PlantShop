@@ -1,5 +1,147 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<PlantShop.Models.TbProduct>
+
 @{
+    ViewData["Title"] = "Giỏ hàng của bạn";
 }
+
+<style>
+    .cart-table img {
+        width: 90px;
+        border-radius: 10px;
+    }
+
+    .cart-container {
+        padding: 40px 0;
+    }
+
+    .cart-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .qty-box {
+        display: flex;
+        align-items: center; /* Căn giữa theo chiều dọc */
+        justify-content: center; /* Căn giữa theo chiều ngang */
+        gap: 10px;
+    }
+
+    .qty-btn {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Nút nằm chính giữa */
+        border-radius: 8px;
+        background: #f3f3f3;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .qty-input {
+        width: 50px;
+        height: 36px;
+        text-align: center;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+    }
+
+    .btn-action {
+        border-radius: 8px;
+    }
+
+    tfoot tr td {
+        font-size: 18px;
+    }
+</style>
+
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/assets/images/car-2.jpg');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs">
+                    <span class="mr-2"><a href="/">Trang chủ <i class="ion-ios-arrow-forward"></i></a></span>
+                    <span>Giỏ hàng<i class="ion-ios-arrow-forward"></i></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container cart-container">
+    <div class="cart-card">
+
+        <h3 class="mb-4">🛒 Giỏ hàng của bạn (@Model.Count sản phẩm)</h3>
+
+        @if (Model.Count > 0)
+        {
+            <table class="table cart-table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Hình ảnh</th>
+                        <th>Tên xe</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@item.Image" />
+                            </td>
+                            <td class="align-middle">@item.Title</td>
+                            <td class="align-middle">@((item.Price ?? 0).ToString("n0")) VNĐ</td>
+
+                            <!-- Tăng giảm số lượng -->
+                            <td class="align-middle">
+                                <div class="qty-box">
+                                    <a asp-controller="Cart" asp-action="Decrease" asp-route-id="@item.ProductId" class="qty-btn">-</a>
+                                    <input class="qty-input" value="@item.Quantity" readonly />
+                                    <a asp-controller="Cart" asp-action="Increase" asp-route-id="@item.ProductId" class="qty-btn">+</a>
+                                </div>
+                            </td>
+
+                            @* <td class="align-middle">@item.Total.ToString("n0") VNĐ</td> *@
+                            <td class="align-middle">
+                                <a asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductId" class="btn btn-danger btn-sm btn-action">
+                                    Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right"><strong>Tổng cộng:</strong></td>
+                        @* <td colspan="2"><strong>@Model.Sum(x => x.Total).ToString("n0") VNĐ</strong></td> *@
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="mt-4 text-center">
+                <a href="/" class="btn btn-outline-secondary btn-action mr-2">Tiếp tục thuê xe</a>
+                <a asp-controller="Checkout" asp-action="Index" class="btn btn-success btn-action px-4">
+                    Tiến hành thanh toán
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center">Giỏ hàng của bạn đang trống!</div>
+            <div class="text-center">
+                <a href="/" class="btn btn-primary btn-action">Quay lại trang chủ</a>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<style>
+    .login-bg {
+        background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/assets/images/bg_1.jpg') center/cover no-repeat;
+        height: 100vh;
+        position: relative;
+    }
+
+    .login-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .login-box {
+        width: 360px;
+        background: #fff;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+        .login-box h3 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+            .login-box input:focus {
+                border-color: #4CAF50;
+                box-shadow: 0 0 6px rgba(76,175,80,0.3);
+            }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+        }
+
+            .login-box button:hover {
+                background: #388e3c;
+            }
+</style>
+
+<section class="login-bg">
+
+    <div class="login-container">
+        <div class="login-box">
+            <h3>Đăng Nhập</h3>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+
+            <form asp-action="Login" method="post">
+                <input type="text" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Mật khẩu" required>
+
+                <button type="submit">Đăng Nhập</button>
+            </form>
+
+            <p>Chưa có tài khoản? <a asp-action="Register">Đăng ký</a></p>
+        </div>
+    </div>
+</section>

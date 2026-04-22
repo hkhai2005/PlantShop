@@ -1,18 +1,39 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PlantShop.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
 
 builder.Services.AddDbContext<PlantShopDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddHttpClient();
+
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+
+// Đăng ký dịch vụ Authentication (Cookie) - Dùng cho Khách hàng
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";   // Chưa đăng nhập thì về đây
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Không đủ quyền thì về đây
+        options.ExpireTimeSpan = TimeSpan.FromDays(1); // Cookie tồn tại 1 ngày
+    });
+
+
 var app = builder.Build();
+
+builder.Services.AddHttpContextAccessor();
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -22,15 +43,20 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
+app.UseSession();
 
+app.UseStaticFiles();// test
 app.UseAuthorization();
-app.UseStaticFiles();
-app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);
+
+app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",

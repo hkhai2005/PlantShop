@@ -60,7 +60,44 @@
                                 </div>
                                 <!-- Login -->
                                 <div class="login">
-                                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span>Login</span></a>
+                                    
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        // 1. ĐÃ ĐĂNG NHẬP
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: chartreuse; font-weight: 600;">
+                                                Xin chào, @User.Identity.Name
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                                @* <a class="dropdown-item" asp-controller="Bookings" asp-action="History">
+                                                    <i class="icon-history mr-2 text-primary"></i> Lịch sử đặt hàng
+                                                </a> *@
+
+                                                @if (User.IsInRole("Admin"))
+                                                {
+                                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                                                        <i class="icon-dashboard mr-2 text-warning"></i> Trang quản trị
+                                                    </a>
+                                                }
+
+                                                <div class="dropdown-divider"></div>
+
+                                                <a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">
+                                                    <i class="icon-sign-out mr-2"></i> Đăng xuất
+                                                </a>
+                                            </div>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        // 2. CHƯA ĐĂNG NHẬP
+                                        <li class="nav-item">
+                                            <a asp-controller="Account" asp-action="Login" ><i class="fa fa-user" aria-hidden="true"></i>Đăng nhập</a>
+                                        </li>
+                                        @* <li class="nav-item cta">
+                                            <a asp-controller="Account" asp-action="Register" class="nav-link"><span>Đăng ký</span></a>
+                                        </li> *@
+                                    }
                                 </div>
                                 <!-- Cart -->
                                 <div class="cart">
@@ -313,6 +350,288 @@
     <script src="../assets/js/active.js"></script>
     <script src="~/assets/toastr/toastr.min.js"></script>
     @RenderSection("Scripts", required: false)
+
+
+
+
+    @* chatbot *@
+
+
+    <div class="chat-bubble" id="chatBubble">
+        <img src="/assets/images/robot.png" alt="Robot AI Chatbot">
+    </div>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span>Chatbot Hỗ Trợ</span>
+            <span class="close-btn" id="closeBtn">&times;</span>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="message bot">
+                Chào mừng! Tôi là trợ lý AI được thiết kế để hỗ trợ bạn. Tôi có thể giúp bạn tìm kiếm thông tin về sản phẩm hoặc dịch vụ nào?
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" placeholder="Nhập câu hỏi...">
+            <button id="sendBtn">Gửi</button>
+        </div>
+    </div>
+
+    <style>
+        /* 1. KHAI BÁO BIẾN MÀU SẮC (Dễ dàng thay đổi màu chủ đạo) */
+        :root {
+            --primary-color: #4CAF50; /* Xanh lá cây (đồng bộ với header website) */
+            --secondary-color: #FF9800; /* Xanh dương (cho nút Gửi/User message) */
+            --text-color: #333;
+            --border-color: #ddd;
+            --shadow-elevation: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --bot-bg: #f0f7f7; /* Nền tin nhắn bot màu xanh ngọc nhạt */
+        }
+
+        /* 2. CHAT BUBBLE (Nút Robot) - ĐÃ TỐI ƯU */
+        .chat-bubble {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: white; /* Nền trắng cho bubble */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-elevation); /* Dùng bóng mượt hơn */
+            z-index: 999;
+            transition: transform 0.3s ease, box-shadow 0.3s;
+            overflow: hidden;
+        }
+
+            /* CSS cho hình ảnh robot bên trong bubble (Giữ lại CSS bạn muốn) */
+            .chat-bubble img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                border-radius: 50%;
+                /* Tùy chọn: Thêm padding nhỏ cho hình ảnh nếu cần */
+                /* padding: 5px; */
+            }
+
+            .chat-bubble:hover {
+                transform: scale(1.1); /* Phóng to nhẹ khi rê chuột vào */
+                box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            }
+
+        /* 3. CỬA SỔ CHAT (CHAT WINDOW) - ĐÃ TỐI ƯU */
+        .chat-window {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 10px;
+            width: 300px;
+            height: 420px;
+            background-color: white;
+            border-radius: 14px; /* Bo góc mềm mại */
+            box-shadow: var(--shadow-elevation);
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        /* 4. ĐẦU CHAT (CHAT HEADER) - ĐÃ TỐI ƯU */
+        .chat-header {
+            padding: 10px 15px;
+            background-color: var(--primary-color); /* Màu xanh lá cây */
+            color: white;
+            font-weight: 600;
+            font-size: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* Loại bỏ border-bottom cũ */
+        }
+
+        .close-btn {
+            cursor: pointer;
+            font-size: 24px; /* Lớn hơn, dễ bấm hơn */
+            transition: opacity 0.2s;
+        }
+
+            .close-btn:hover {
+                opacity: 0.8;
+            }
+
+        /* 5. PHẦN THÂN CHAT (CHAT BODY) */
+        .chat-body {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background-color: #fcfcfc; /* Nền siêu nhạt */
+        }
+
+        /* Tin nhắn */
+        .message {
+            padding: 10px 14px;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.85em;
+        }
+
+            .message.bot {
+                background-color: var(--bot-bg);
+                color: var(--text-color);
+                align-self: flex-start;
+                border-bottom-left-radius: 5px; /* Hiệu ứng bubble hiện đại */
+            }
+
+            .message.user {
+                background-color: var(--secondary-color);
+                color: white;
+                align-self: flex-end;
+                border-bottom-right-radius: 5px; /* Hiệu ứng bubble hiện đại */
+            }
+
+            .message.loading {
+                background-color: #ffe0b2;
+                color: #888;
+                font-style: italic;
+            }
+
+        /* 6. KHUNG NHẬP LIỆU (CHAT FOOTER) - ĐÃ TỐI ƯU */
+        .chat-footer {
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #f0f0f0;
+            background-color: #ffffff;
+        }
+
+        #chatInput {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 25px; /* Tròn hơn */
+            padding: 10px 14px;
+            margin-right: 10px;
+            font-size: 0.9em;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+            #chatInput:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15); /* Hiệu ứng focus xanh lá cây nhẹ */
+                outline: none;
+            }
+
+        #sendBtn {
+            border: none;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 20px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+            #sendBtn:hover {
+                background-color: #0069d9;
+            }
+
+            #sendBtn:active {
+                transform: scale(0.98);
+            }
+    </style>
+    <script>
+        $(document).ready(function() {
+            // Bắt sự kiện (event) click (nhấp chuột)
+            $('#chatBubble').on('click', function() {
+                $('.chat-window').css('display', 'flex'); // Hiện cửa sổ chat
+                $(this).hide(); // Ẩn cái bong bóng
+            });
+
+            $('#closeBtn').on('click', function() {
+                $('.chat-window').hide(); // Ẩn cửa sổ chat
+                $('#chatBubble').show(); // Hiện lại bong bóng
+            });
+
+            $('#sendBtn').on('click', function() {
+                sendMessage();
+            });
+
+            $('#chatInput').on('keypress', function(e) {
+                if (e.which == 13) { // 13 là phím (key) Enter
+                    sendMessage();
+                }
+            });
+
+            function sendMessage() {
+                var userMessage = $('#chatInput').val();
+                if (userMessage.trim() === "") return;
+
+                // Hiển thị tin nhắn của người dùng (user)
+                $('#chatBody').append('<div class="message user">' + userMessage + '</div>');
+                $('#chatInput').val(""); // Xóa (Delete) ô nhập
+
+                // Hiển thị "Bot (Bot) đang gõ..."
+                $('#chatBody').append('<div class="message bot loading" id="loadingMsg">Đang xử lý...</div>');
+                scrollToBottom();
+
+                // GỌI API BACKEND (MÁY CHỦ) CỦA BẠN
+                $.ajax({
+                    url: '/Chat/ask', // Đường dẫn (path) tới API bạn tạo
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ question: userMessage }), // Gửi đi format JSON (Một định dạng dữ liệu)
+
+                    // === PHẦN ĐƯỢC NÂNG CẤP (UPGRADE) ===
+                    success: function(response) {
+                        // Xóa (Delete) "Đang xử lý..."
+                        $('#loadingMsg').remove();
+
+                        // Kiểm tra (Check) xem response là CÂU CHAT hay là DỮ LIỆU (DATA) SQL
+                        if (response && response.chat) {
+                            // 1. Đây là CÂU CHAT (vì backend (máy chủ) trả về { "chat": "..." })
+                            $('#chatBody').append('<div class="message bot">' + response.chat + '</div>');
+                        }
+                        else {
+                            // 2. Đây là DỮ LIỆU (DATA) SQL (giống như cũ (old))
+                            // Hiển thị dữ liệu (data) JSON (Một định dạng dữ liệu) thô (raw)
+                            var botResponse = JSON.stringify(response, null, 2);
+                            $('#chatBody').append('<div class="message bot"><pre>' + botResponse + '</pre></div>');
+                        }
+
+                        scrollToBottom();
+                    },
+                    // === HẾT PHẦN NÂNG CẤP (UPGRADE) ===
+
+                    error: function(xhr, status, error) {
+                    $('#loadingMsg').remove();
+
+                    var errorMsg = "Lỗi: Đã có sự cố xảy ra 😥"; // Một tin nhắn mặc định
+
+                    if (xhr.responseText) {
+                        // Thường thì C# sẽ trả lỗi 500 về đây
+                        errorMsg = "Lỗi: " + xhr.responseText;
+                    } else if (error) {
+                        // Các lỗi mạng hoặc lỗi JS khác
+                        errorMsg = "Lỗi: " + error;
+                    }
+
+                    $('#chatBody').append('<div class="message bot">' + errorMsg + '</div>');
+                    scrollToBottom();
+                }
+                });
+            }
+
+            function scrollToBottom() {
+                 $('#chatBody').scrollTop($('#chatBody')[0].scrollHeight);
+            }
+        });
+    </script>
 </body>
 
 </html>
