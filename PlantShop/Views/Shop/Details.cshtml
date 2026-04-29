@@ -1,12 +1,12 @@
 ﻿@model PlantShop.Models.TbProduct
 @{
-    List<TbProductCategory> productComments = ViewBag.ProductComment;
+    List<TbProduct> productComments = ViewBag.ProductComment;
 }
 
     <!-- ##### Breadcrumb Area Start ##### -->
     <div class="breadcrumb-area">
         <!-- Top Breadcrumb Area -->
-        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(img/bg-img/24.jpg);">
+    <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(../assets/img/bg-img/24.jpg);">
             <h2>SHOP DETAILS</h2>
         </div>
 
@@ -36,28 +36,15 @@
                             <div id="product_details_slider" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <a class="product-img" href="img/bg-img/49.jpg" title="Product Image">
-                                            <img class="d-block w-100" src="img/bg-img/49.jpg" alt="1">
-                                        </a>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <a class="product-img" href="img/bg-img/49.jpg" title="Product Image">
-                                            <img class="d-block w-100" src="img/bg-img/49.jpg" alt="1">
-                                        </a>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <a class="product-img" href="img/bg-img/49.jpg" title="Product Image">
-                                            <img class="d-block w-100" src="img/bg-img/49.jpg" alt="1">
+                                    <a class="product-img" href="@Model.Image" title="Product Image">
+                                            <img class="d-block w-100" src="@Model.Image" alt="1">
                                         </a>
                                     </div>
                                 </div>
                                 <ol class="carousel-indicators">
-                                    <li class="active" data-target="#product_details_slider" data-slide-to="0" style="background-image: url(img/bg-img/49.jpg);">
+                                <li class="active" data-target="#product_details_slider" data-slide-to="0" style="background-image: url(@Model.Image);">
                                     </li>
-                                    <li data-target="#product_details_slider" data-slide-to="1" style="background-image: url(img/bg-img/49.jpg);">
-                                    </li>
-                                    <li data-target="#product_details_slider" data-slide-to="2" style="background-image: url(img/bg-img/49.jpg);">
-                                    </li>
+                                    
                                 </ol>
                             </div>
                         </div>
@@ -65,10 +52,10 @@
 
                     <div class="col-12 col-md-6">
                         <div class="single_product_desc">
-                            <h4 class="title">Recuerdos Plant</h4>
-                            <h4 class="price">$9.99</h4>
+                            <h4 class="title">@Model.Title</h4>
+                            <h4 class="price">@Model.Price $</h4>
                             <div class="short_overview">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pellem malesuada in nibh selama euismod. Curabitur a rhoncus dui. Nunc lobortis cursus magna utrum faucibus. Vivamus justo nibh, pharetra non risus accumsan, tincidunt suscipit leo.</p>
+                                <p>@Model.Detail</p>
                             </div>
 
                             <div class="cart--area d-flex flex-wrap align-items-center">
@@ -89,9 +76,8 @@
                             </div>
 
                             <div class="products--meta">
-                                <p><span>SKU:</span> <span>CT201807</span></p>
-                                <p><span>Category:</span> <span>Outdoor Plants</span></p>
-                                <p><span>Tags:</span> <span>plants, green, cactus </span></p>
+                                <p><span>SKU:</span> <span>@Model.Sku</span></p>
+                                <p><span>Tags:</span> <span>@Model.Tags</span></p>
                                 <p>
                                     <span>Share on:</span>
                                     <span>
@@ -129,8 +115,7 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade show active" id="description">
                                 <div class="description_area">
-                                    <p>Sed a facilisis orci. Curabitur magna urna, varius placerat placerat sodales, pretium vitae orci. Aliquam erat volutpat. Cras sit amet suscipit magna. Quisque turpis odio, facilisis vel eleifend eu, dignissim ac odio.</p>
-                                    <p>Interdum et malesuada fames ac ante ipsum primis in faucibus. In scelerisque augue at the moment mattis. Proin vitae arcu sit amet justo sollicitudin tincidunt sit amet ut velit.Proin placerat vel augue eget euismod. Phasellus cursus orci eu tellus vestibulum, vestibulum urna accumsan. Vestibulum ut ullamcorper sapien. Pellentesque molestie, est ac vestibulum eleifend, lorem ipsum mollis ipsum.</p>
+                                    <p>@Model.Description</p>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="addi-info">

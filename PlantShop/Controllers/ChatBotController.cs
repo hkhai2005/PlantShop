@@ -39,39 +39,62 @@ namespace PlantShop.Controllers
             {
                 // === 1. MÔ TẢ DATABASE (Đã lấy CSDL (database) của bạn) ===
                 string dbSchema = @"
-                Đây là cấu trúc CSDL cho hệ thống Thuê xe Ô tô (CarRental):
-	            - tb_Car(CarId PK, Title, CarCategoryId, Brand, Model, Seats, Price, PriceSale, Quantity, UnitInStock, IsActive, Star): Bảng (Table) chứa thông tin xe ô tô cho thuê.
-	            - tb_CarCategory(CarCategoryId PK, Title, Description): Bảng (Table) chứa danh mục xe (ví dụ: 'Xe 4 chỗ', 'SUV', 'Xe điện').
-	            - tb_CarImage(ImageId PK, CarId FK, ImageUrl, SortOrder): Bảng (Table) chứa hình ảnh chi tiết của xe.
-	            - tb_CarReview(CarReviewId PK, CarId FK, Name, Detail, Star): Bảng (Table) chứa đánh giá của khách hàng về xe.
-	            - tb_Booking(BookingId PK, Code, CustomerName, Phone, PickupLocation, ReturnLocation, StartDate, EndDate, TotalAmount, BookingStatusId FK): Bảng (Table) chứa thông tin đơn đặt xe (hợp đồng thuê).
-	            - tb_BookingDetail(BookingDetailId PK, BookingId FK, CarId FK, Price, Quantity, Days, SubTotal): Bảng (Table) chi tiết đơn đặt xe (liên kết với xe được thuê).
-	            - tb_BookingStatus(BookingStatusId PK, Name, Description): Bảng (Table) chứa trạng thái đơn đặt (ví dụ: 'Waiting', 'Confirmed', 'Completed').
-	            - tb_Account(AccountId PK, Username, Password, FullName, Phone, Email, RoleId FK, IsActive): Bảng (Table) tài khoản quản trị/nhân viên.
-	            - tb_Role(RoleId PK, RoleName, Description): Bảng (Table) quyền hạn (ví dụ: 'Admin', 'Staff').
-	            - tb_Customer(CustomerId PK, Name, Phone, Email, CitizenId, Address, IsActive): Bảng (Table) khách hàng (có thể là khách vãng lai hoặc khách quen).
-	            - tb_Category(CategoryId PK, Title, Description): Bảng (Table) danh mục chung (cho Tin tức và Blog).
-	            - tb_News(NewsId PK, Title, Alias, CategoryId FK, Description, Detail): Bảng (Table) tin tức công ty.
-	            - tb_Blog(BlogId PK, Title, Alias, CategoryId FK, Description, Detail, AccountId FK): Bảng (Table) bài viết Blog/Kinh nghiệm thuê xe.
-	            - tb_BlogComment(CommentId PK, BlogId FK, Name, Detail): Bảng (Table) bình luận Blog.
-	            - tb_Contact(ContactId PK, Name, Phone, Email, Message, IsRead): Bảng (Table) lưu trữ thông tin liên hệ của khách hàng.
-	            - tb_Menu(MenuId PK, Title, ParentId FK, Levels, Position): Bảng (Table) cấu trúc Menu website.
-	            - tb_Service(ServiceId PK, Title, Icon, Description): Bảng (Table) các dịch vụ cung cấp kèm theo.
+Đây là cấu trúc CSDL cho hệ thống Bán cây cảnh trực tuyến (PlantShop):
+- tb_Role(RoleId PK, RoleName, Description): Bảng (Table) chứa quyền hạn của tài khoản quản trị (ví dụ: 'Admin', 'Manager', 'Sales').
+- tb_Account(AccountId PK, Username, Password, FullName, Phone, Email, RoleId FK, LastLogin, IsActive): Bảng (Table) chứa tài khoản quản trị/nhân viên quản lý website.
+- tb_Customer(CustomerId PK, Username, Password, FullName, Birthday, Avatar, Phone, Email, Address, LastLogin, IsActive, Gender, Ward, District, Province, VerifyEmail, VerifyPhone, ResetPasswordToken, TokenExpiry): Bảng (Table) chứa thông tin khách hàng mua sắm trên website.
+- tb_ProductCategory(CategoryProductId PK, Title, Alias, Description, Icon, Position, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsActive): Bảng (Table) chứa danh mục sản phẩm cây cảnh (ví dụ: 'Cây để bàn', 'Cây phong thủy', 'Cây nội thất').
+- tb_Product(ProductId PK, Title, Alias, CategoryProductId FK, Description, Detail, Image, Price, PriceSale, Quantity, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsNew, IsBestSeller, IsFeatured, UnitInStock, IsActive, Star, SKU, Weight, Dimensions, Views, SoldCount, Tags): Bảng (Table) chứa thông tin sản phẩm cây cảnh.
+- tb_ProductImage(ProductImageId PK, ProductId FK, ImageUrl, IsDefault, Position, CreatedDate): Bảng (Table) chứa ảnh phụ của sản phẩm (mỗi sản phẩm có nhiều ảnh).
+- tb_Attribute(AttributeId PK, Name, Unit): Bảng (Table) chứa danh sách thuộc tính sản phẩm (ví dụ: 'Chiều cao', 'Đường kính chậu', 'Màu sắc').
+- tb_ProductAttribute(ProductAttributeId PK, ProductId FK, AttributeId FK, Value): Bảng (Table) chứa giá trị thuộc tính của từng sản phẩm (quan hệ nhiều-nhiều).
+- tb_ProductReview(ProductReviewId PK, Name, Phone, Email, CreatedDate, Detail, Star, ProductId FK, IsActive, CustomerId FK, IsApproved, Reply, ReplyDate): Bảng (Table) chứa đánh giá của khách hàng về sản phẩm.
+- tb_Cart(CartId PK, CustomerId FK, SessionId, CreatedDate, ModifiedDate): Bảng (Table) chứa giỏ hàng của khách (hỗ trợ cả khách đăng nhập và chưa đăng nhập).
+- tb_CartDetail(CartDetailId PK, CartId FK, ProductId FK, Quantity, Price): Bảng (Table) chi tiết giỏ hàng (sản phẩm được thêm vào giỏ).
+- tb_Coupon(CouponId PK, Code, Name, DiscountType, DiscountValue, MinOrderAmount, MaxDiscount, StartDate, EndDate, UsageLimit, UsedCount, IsActive, CreatedDate): Bảng (Table) chứa mã giảm giá/khuyến mãi.
+- tb_OrderStatus(OrderStatusId PK, Name, Description): Bảng (Table) chứa trạng thái đơn hàng (ví dụ: 'Chờ xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã giao').
+- tb_Order(OrderId PK, Code, CustomerId FK, CustomerName, Phone, Address, TotalAmount, Quantity, OrderStatusId FK, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, PaymentMethod, PaymentStatus, ShippingFee, DiscountAmount, Note, CancelReason, CanceledDate): Bảng (Table) chứa thông tin đơn hàng.
+- tb_OrderDetail(OrderDetailId PK, OrderId FK, ProductId FK, Price, Quantity): Bảng (Table) chi tiết đơn hàng (sản phẩm được mua).
+- tb_OrderCoupon(OrderCouponId PK, OrderId FK, CouponId FK, DiscountAmount): Bảng (Table) liên kết mã giảm giá với đơn hàng.
+- tb_Shipping(ShippingId PK, OrderId FK, ShipperName, TrackingNumber, ShippingFee, EstimatedDelivery, ActualDelivery, Status, Note, CreatedDate): Bảng (Table) chứa thông tin vận chuyển của đơn hàng.
+- tb_Wishlist(WishlistId PK, CustomerId FK, ProductId FK, CreatedDate): Bảng (Table) chứa danh sách sản phẩm yêu thích của khách hàng.
+- tb_Category(CategoryId PK, Title, Alias, Description, Position, SeoTitle, SeoDescription, SeoKeywords, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy): Bảng (Table) chứa danh mục bài viết Blog (Tin tức, Chăm sóc cây, Phong thủy...).
+- tb_Blog(BlogId PK, Title, Alias, CategoryId FK, Description, Detail, Image, SeoTitle, SeoDescription, SeoKeywords, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, AccountId FK, IsActive): Bảng (Table) chứa bài viết Blog về cây cảnh.
+- tb_BlogComment(CommentId PK, Name, Phone, Email, CreatedDate, Detail, BlogId FK, IsActive): Bảng (Table) chứa bình luận của người dùng trên bài viết Blog.
+- tb_Contact(ContactId PK, Name, Phone, Email, Message, IsRead, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy): Bảng (Table) lưu trữ thông tin liên hệ của khách hàng.
+- tb_Menu(MenuId PK, Title, Alias, Description, Levels, ParentId FK, Position, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, IsActive): Bảng (Table) cấu trúc Menu website (hỗ trợ menu đa cấp).
+- tb_Notification(NotificationId PK, CustomerId FK, Title, Content, Link, IsRead, CreatedDate): Bảng (Table) chứa thông báo gửi đến khách hàng.
+- tb_ActivityLog(LogId PK, AccountId FK, CustomerId FK, Action, IPAddress, UserAgent, CreatedDate): Bảng (Table) ghi nhật ký hoạt động của người dùng (Login, Logout, CreateOrder...).
 
-                Các quan hệ (Relationship) chính:
-                - tb_Car.CarCategoryId -> tb_CarCategory.CarCategoryId
-                - tb_CarImage.CarId -> tb_Car.CarId
-                - tb_CarReview.CarId -> tb_Car.CarId
-                - tb_Booking.BookingStatusId -> tb_BookingStatus.BookingStatusId
-                - tb_BookingDetail.BookingId -> tb_Booking.BookingId
-                - tb_BookingDetail.CarId -> tb_Car.CarId
-                - tb_Account.RoleId -> tb_Role.RoleId
-                - tb_Blog.CategoryId -> tb_Category.CategoryId
-                - tb_News.CategoryId -> tb_Category.CategoryId
-                - tb_Blog.AccountId -> tb_Account.AccountId
-                - tb_BlogComment.BlogId -> tb_Blog.BlogId
-                - tb_Menu.ParentId -> tb_Menu.MenuId (Quan hệ tự tham chiếu cho Menu đa cấp)
-                ";
+Các quan hệ (Relationship) chính:
+- tb_Account.RoleId -> tb_Role.RoleId
+- tb_Customer (không có khóa ngoại trực tiếp, độc lập)
+- tb_Product.CategoryProductId -> tb_ProductCategory.CategoryProductId
+- tb_ProductImage.ProductId -> tb_Product.ProductId
+- tb_ProductAttribute.ProductId -> tb_Product.ProductId
+- tb_ProductAttribute.AttributeId -> tb_Attribute.AttributeId
+- tb_ProductReview.ProductId -> tb_Product.ProductId
+- tb_ProductReview.CustomerId -> tb_Customer.CustomerId
+- tb_Cart.CustomerId -> tb_Customer.CustomerId
+- tb_CartDetail.CartId -> tb_Cart.CartId
+- tb_CartDetail.ProductId -> tb_Product.ProductId
+- tb_Order.CustomerId -> tb_Customer.CustomerId
+- tb_Order.OrderStatusId -> tb_OrderStatus.OrderStatusId
+- tb_OrderDetail.OrderId -> tb_Order.OrderId
+- tb_OrderDetail.ProductId -> tb_Product.ProductId
+- tb_OrderCoupon.OrderId -> tb_Order.OrderId
+- tb_OrderCoupon.CouponId -> tb_Coupon.CouponId
+- tb_Shipping.OrderId -> tb_Order.OrderId
+- tb_Wishlist.CustomerId -> tb_Customer.CustomerId
+- tb_Wishlist.ProductId -> tb_Product.ProductId
+- tb_Blog.CategoryId -> tb_Category.CategoryId
+- tb_Blog.AccountId -> tb_Account.AccountId
+- tb_BlogComment.BlogId -> tb_Blog.BlogId
+- tb_Menu.ParentId -> tb_Menu.MenuId (Quan hệ tự tham chiếu cho Menu đa cấp)
+- tb_Notification.CustomerId -> tb_Customer.CustomerId
+- tb_ActivityLog.AccountId -> tb_Account.AccountId
+- tb_ActivityLog.CustomerId -> tb_Customer.CustomerId
+";
 
                 // === 2. PROMPT (CÂU LỆNH) YÊU CẦU GEMINI SINH JSON (Một định dạng dữ liệu) (PHIÊN BẢN (VERSION) MỚI (NEW)) ===
                 string finalPrompt = $@"

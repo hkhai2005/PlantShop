@@ -1,0 +1,180 @@
+﻿@* @model PlantShop.Models.TbProduct
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách sản phẩm</li>
+            <li class="breadcrumb-item"><a href="#">Xóa sản phẩm</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Xác nhận xóa sản phẩm</h3>
+                <div class="tile-body">
+
+                    <!-- Cảnh báo -->
+                    <div class="alert alert-warning text-center">
+                        <i class="fa fa-exclamation-triangle fa-2x mb-2"></i><br />
+                        <strong>Cảnh báo:</strong> Bạn đang thực hiện xóa sản phẩm. Hành động này không thể hoàn tác!
+                    </div>
+
+                    <div class="row d-flex justify-content-center mt-4">
+                        <!-- Hiển thị ảnh để xác nhận đúng xe -->
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.Image))
+                            {
+                                <img src="@Model.Image" alt="@Model.Title" class="img-fluid rounded shadow-sm" style="max-height: 250px;" />
+                            }
+                            else
+                            {
+                                <div class="p-5 bg-light border rounded">Không có hình ảnh</div>
+                            }
+                        </div>
+
+                        <!-- Thông tin tóm tắt -->
+                        <div class="col-md-6">
+                            <h3 class="text-primary">@Html.DisplayFor(model => model.Title)</h3>
+                            <dl class="row mt-3">
+                                <dt class="col-sm-4">Thương hiệu:</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Brand)</dd>
+
+                                <dt class="col-sm-4">Biển số xe:</dt>
+                                <dd class="col-sm-8 font-weight-bold">@Html.DisplayFor(model => model.LicensePlate)</dd>
+
+                                <dt class="col-sm-4">Loại xe:</dt>
+                                <dd class="col-sm-8">@(Model.CarCategory != null ? Model.CarCategory.Title : "---")</dd>
+
+                                <dt class="col-sm-4">Giá thuê:</dt>
+                                <dd class="col-sm-8 text-danger font-weight-bold">@string.Format("{0:n0}", Model.Price) VNĐ</dd>
+
+                                <dt class="col-sm-4">Trạng thái:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span>Đang hiển thị</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span>Đang ẩn</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="tile-footer text-center mt-3">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="CarId" />
+
+                        <button type="submit" class="btn btn-danger btn-lg px-4">
+                            <i class="fa fa-trash"></i> Xóa vĩnh viễn
+                        </button>
+
+                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4 ml-2">
+                            <i class="fa fa-times"></i> Hủy bỏ
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách sản phẩm</li>
+            <li class="breadcrumb-item"><a href="#">Xóa sản phẩm</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Xác nhận xóa sản phẩm</h3>
+                <div class="tile-body">
+
+                    <!-- Cảnh báo -->
+                    <div class="alert alert-warning text-center">
+                        <i class="fa fa-exclamation-triangle fa-2x mb-2"></i><br />
+                        <strong>Cảnh báo:</strong> Bạn đang thực hiện xóa sản phẩm. Hành động này không thể hoàn tác!
+                    </div>
+
+                    <div class="row d-flex justify-content-center mt-4">
+                        <!-- Hiển thị ảnh để xác nhận đúng xe -->
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.Image))
+                            {
+                                <img src="@Model.Image" alt="@Model.Title" class="img-fluid rounded shadow-sm" style="max-height: 250px;" />
+                            }
+                            else
+                            {
+                                <div class="p-5 bg-light border rounded">Không có hình ảnh</div>
+                            }
+                        </div>
+
+                        <!-- Thông tin tóm tắt -->
+                        <div class="col-md-6">
+                            <h3 class="text-primary">@Html.DisplayFor(model => model.Title)</h3>
+                            <dl class="row mt-3">
+                                <dt class="col-sm-4">Thương hiệu:</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Brand)</dd>
+
+                                <dt class="col-sm-4">Biển số xe:</dt>
+                                <dd class="col-sm-8 font-weight-bold">@Html.DisplayFor(model => model.LicensePlate)</dd>
+
+                                <dt class="col-sm-4">Loại xe:</dt>
+                                <dd class="col-sm-8">@(Model.CarCategory != null ? Model.CarCategory.Title : "---")</dd>
+
+                                <dt class="col-sm-4">Giá thuê:</dt>
+                                <dd class="col-sm-8 text-danger font-weight-bold">@string.Format("{0:n0}", Model.Price) VNĐ</dd>
+
+                                <dt class="col-sm-4">Trạng thái:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span>Đang hiển thị</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span>Đang ẩn</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="tile-footer text-center mt-3">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="CarId" />
+
+                        <button type="submit" class="btn btn-danger btn-lg px-4">
+                            <i class="fa fa-trash"></i> Xóa vĩnh viễn
+                        </button>
+
+                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4 ml-2">
+                            <i class="fa fa-times"></i> Hủy bỏ
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main> *@

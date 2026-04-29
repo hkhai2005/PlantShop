@@ -15,12 +15,9 @@ namespace PlantShop.Controllers
         {
             var products = _context.TbProducts.ToList();
             return View(products);
-            
 
         }
 
-
-        
 
         public IActionResult Details()
         {
@@ -29,19 +26,19 @@ namespace PlantShop.Controllers
         [Route("/product/{alias}-{id}.html")]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.TbProductCategories == null)
+            if (id == null || _context.TbProducts == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.TbProductCategories.FirstOrDefaultAsync(m => m.CategoryProductId == id);
+            var product = await _context.TbProducts.FirstOrDefaultAsync(m => m.ProductId == id);
 
             if (product == null)
             {
                 return NotFound();
             }
-            ViewBag.produicts = _context.TbProductCategories
-                .Where(i => i.CategoryProductId == id)
+            ViewBag.produicts = _context.TbProducts
+                .Where(i => i.ProductId == id)
                 .ToList();
 
             return View(product);

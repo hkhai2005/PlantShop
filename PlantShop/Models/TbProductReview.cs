@@ -23,5 +23,15 @@ public partial class TbProductReview
 
     public bool IsActive { get; set; }
 
+    public int? CustomerId { get; set; }
+
+    public bool? IsApproved { get; set; }
+
+    public string? Reply { get; set; }
+
+    public DateTime? ReplyDate { get; set; }
+
+    public virtual TbCustomer? Customer { get; set; }
+
     public virtual TbProduct? Product { get; set; }
 }

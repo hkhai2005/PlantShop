@@ -1,0 +1,160 @@
+﻿@* @model PlantShop.Models.TbProduct
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách sản phẩm</li>
+            <li class="breadcrumb-item"><a href="#">Sửa sản phẩm</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Chỉnh sửa thông tin xe</h3>
+                <div class="tile-body">
+                    <form asp-action="Edit" class="row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <!-- Giữ ID và các thông tin khởi tạo ẩn để không bị mất khi Post -->
+                        <input type="hidden" asp-for="CarId" />
+                        <input type="hidden" asp-for="CreatedDate" />
+                        <input type="hidden" asp-for="CreatedBy" />
+                        <input type="hidden" asp-for="Alias" /> <!-- Nếu Alias tự sinh thì ẩn, nếu cần sửa thì mở ra -->
+                        <!-- NHÓM 1: THÔNG TIN CƠ BẢN -->
+                        <div class="form-group col-md-3">
+                            <label asp-for="Title" class="control-label">Tên xe</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Brand" class="control-label">Thương hiệu</label>
+                            <input asp-for="Brand" class="form-control" />
+                            <span asp-validation-for="Brand" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="CarCategoryId" class="control-label">Loại xe</label>
+                            <select asp-for="CarCategoryId" class="form-control" asp-items="ViewBag.CarCategoryId">
+                                <option value="">-- Chọn loại xe --</option>
+                            </select>
+                            <span asp-validation-for="CarCategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="LicensePlate" class="control-label">Biển số xe</label>
+                            <input asp-for="LicensePlate" class="form-control" />
+                            <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                        </div>
+
+                        <!-- NHÓM 2: THÔNG SỐ KỸ THUẬT (Các trường có trong Model cũ) -->
+                        <div class="form-group col-md-3">
+                            <label asp-for="Model" class="control-label">Model</label>
+                            <input asp-for="Model" class="form-control" />
+                            <span asp-validation-for="Model" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Year" class="control-label">Năm sản xuất</label>
+                            <input asp-for="Year" class="form-control" type="number" />
+                            <span asp-validation-for="Year" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Seats" class="control-label">Số chỗ ngồi</label>
+                            <input asp-for="Seats" class="form-control" type="number" />
+                            <span asp-validation-for="Seats" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Transmission" class="control-label">Hộp số</label>
+                            <input asp-for="Transmission" class="form-control" placeholder="Vd: Tự động/Số sàn" />
+                            <span asp-validation-for="Transmission" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="FuelType" class="control-label">Nhiên liệu</label>
+                            <input asp-for="FuelType" class="form-control" placeholder="Vd: Xăng/Dầu/Điện" />
+                            <span asp-validation-for="FuelType" class="text-danger"></span>
+                        </div>
+
+                        <!-- NHÓM 3: KHO VÀ GIÁ -->
+                        <div class="form-group col-md-3">
+                            <label asp-for="Quantity" class="control-label">Tổng số lượng</label>
+                            <input asp-for="Quantity" class="form-control" type="number" />
+                            <span asp-validation-for="Quantity" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="UnitInStock" class="control-label">Tồn kho hiện tại</label>
+                            <input asp-for="UnitInStock" class="form-control" type="number" />
+                            <span asp-validation-for="UnitInStock" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Price" class="control-label">Giá thuê (VNĐ)</label>
+                            <input asp-for="Price" class="form-control" type="number" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="PriceSale" class="control-label">Giá khuyến mãi (VNĐ)</label>
+                            <input asp-for="PriceSale" class="form-control" type="number" />
+                            <span asp-validation-for="PriceSale" class="text-danger"></span>
+                        </div>
+                        <!-- NHÓM 4: TRẠNG THÁI VÀ CẤU HÌNH -->
+                        <div class="form-group col-md-3">
+                            <label for="IsActiveSelect" class="control-label">Trạng thái hiển thị</label>
+                            <select class="form-control" id="IsActiveSelect" asp-for="IsActive">
+                                <option value="true">Hiển thị</option>
+                                <option value="false">Ẩn</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Star" class="control-label">Đánh giá (Sao)</label>
+                            <input asp-for="Star" class="form-control" type="number" min="0" max="5" />
+                        </div>
+                        <!-- NHÓM 5: HÌNH ẢNH VÀ MÔ TẢ -->
+                        <div class="form-group col-md-12">
+                            <label asp-for="Image" class="control-label">Ảnh đại diện</label>
+                            <div class="input-group mb-6">
+                                <div class="input-group-prepend">
+                                    <button type="button"
+                                            class="btn btn-success btn-image-picker h-100"
+                                            onclick="openDialog()">
+                                        <i class="fa fa-image mr-1"></i> Chọn ảnh
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control" id="file_input" asp-for="Image" aria-describedby="button-addon2">
+                            </div>
+                            <!-- Hiển thị ảnh hiện tại nếu có -->
+                            @if (!string.IsNullOrEmpty(Model.Image))
+                            {
+                                <div class="mt-2">
+                                    <img src="@Model.Image" style="max-height: 100px;" alt="Current Image" />
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label asp-for="Description" class="control-label">Mô tả ngắn</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label asp-for="Detail" class="control-label">Chi tiết sản phẩm</label>
+                            <!-- Nếu bạn dùng CKEditor thì thay class form-control bằng id="editor" hoặc tương tự -->
+                            <textarea asp-for="Detail" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="Detail" class="text-danger"></span>
+                        </div>
+
+                        <!-- BUTTONS -->
+                        <div class="form-group col-md-12">
+                            <button class="btn btn-save" type="submit">Lưu lại</button>
+                            <a asp-action="Index" class="btn btn-cancel">Hủy bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@{
+    var summerNote = new Do_An_Thue_Xe.Areas.Admin.Models.SummerNote("#Detail");
+    <partial name="_SummerNote" model="summerNote" />
+} *@

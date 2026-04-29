@@ -1,0 +1,110 @@
+﻿@model IEnumerable<PlantShop.Models.TbProduct>
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách sản phẩm</b></a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                            <a asp-action="Create" class="btn btn-add btn-sm" title="Thêm">
+                                <i class="fas fa-plus"></i>
+                                Tạo mới sản phẩm
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)">
+                                <i class="fas fa-file-pdf"></i> Xuất PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Thông tin xe</th>
+                                <th>Ảnh</th>
+                                <th>Phân loại</th>
+                                <th>Giá thuê & Số lượng</th>
+                                <th>Trạng thái</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@(i++)</td>
+                                    <td>
+                                        <span class="font-weight-bold text-primary" style="font-size: 1.1em;">@Html.DisplayFor(modelItem => item.Title)</span>
+                                        <br>
+                                        <span class="small text-muted" style="font-size: 0.9em;">BS: @Html.DisplayFor(modelItem => item.Price)</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <img src="@item.Image" alt="@item.Title" style="width: 80px; height: 60px; object-fit: contain; border-radius: 4px;" />
+                                        @* @if (!string.IsNullOrEmpty(item.Image))
+                                        {
+                                            <img src="@item.Image" alt="@item.Title" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;" />
+                                        }
+                                        else
+                                        {
+                                            <span class="small text-muted">No Image</span>
+                                        } *@
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-info" style="font-size: 0.9em;">@Html.DisplayFor(modelItem => item.CategoryProduct.Title)</span>
+                                        <br>
+                                        <span class="small" style="font-size: 0.9em;">Hãng: @Html.DisplayFor(modelItem => item.Detail)</span>
+                                    </td>
+                                    <td>
+                                        <span class="font-weight-bold text-danger" style="font-size: 1em;">@string.Format("{0:n0}", item.Price) VND</span>
+                                        <br>
+                                        <small style="font-size: 1em;">SL: @Html.DisplayFor(modelItem => item.Quantity)</small>
+                                    </td>
+                                    <td>
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="badge badge-success">Đang hiện</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">Đang ẩn</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-primary btn-sm edit" type="button" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-info btn-sm edit" type="button" title="Chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger btn-sm delete" type="button" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

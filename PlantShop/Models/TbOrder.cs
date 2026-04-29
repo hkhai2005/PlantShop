@@ -31,9 +31,27 @@ public partial class TbOrder
 
     public string? ModifiedBy { get; set; }
 
+    public string? PaymentMethod { get; set; }
+
+    public string? PaymentStatus { get; set; }
+
+    public decimal? ShippingFee { get; set; }
+
+    public decimal? DiscountAmount { get; set; }
+
+    public string? Note { get; set; }
+
+    public string? CancelReason { get; set; }
+
+    public DateTime? CanceledDate { get; set; }
+
     public virtual TbCustomer? Customer { get; set; }
 
     public virtual TbOrderStatus? OrderStatus { get; set; }
 
+    public virtual ICollection<TbOrderCoupon> TbOrderCoupons { get; set; } = new List<TbOrderCoupon>();
+
     public virtual ICollection<TbOrderDetail> TbOrderDetails { get; set; } = new List<TbOrderDetail>();
+
+    public virtual TbShipping? TbShipping { get; set; }
 }

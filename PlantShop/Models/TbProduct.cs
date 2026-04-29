@@ -45,9 +45,29 @@ public partial class TbProduct
 
     public int? Star { get; set; }
 
+    public string? Sku { get; set; }
+
+    public decimal? Weight { get; set; }
+
+    public string? Dimensions { get; set; }
+
+    public int? Views { get; set; }
+
+    public int? SoldCount { get; set; }
+
+    public string? Tags { get; set; }
+
     public virtual TbProductCategory? CategoryProduct { get; set; }
+
+    public virtual ICollection<TbCartDetail> TbCartDetails { get; set; } = new List<TbCartDetail>();
 
     public virtual ICollection<TbOrderDetail> TbOrderDetails { get; set; } = new List<TbOrderDetail>();
 
+    public virtual ICollection<TbProductAttribute> TbProductAttributes { get; set; } = new List<TbProductAttribute>();
+
+    public virtual ICollection<TbProductImage> TbProductImages { get; set; } = new List<TbProductImage>();
+
     public virtual ICollection<TbProductReview> TbProductReviews { get; set; } = new List<TbProductReview>();
+
+    public virtual ICollection<TbWishlist> TbWishlists { get; set; } = new List<TbWishlist>();
 }

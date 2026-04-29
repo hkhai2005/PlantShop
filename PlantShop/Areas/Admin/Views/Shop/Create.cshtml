@@ -1,0 +1,115 @@
+﻿@* @model PlantShop.Models.TbProduct
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách sản phẩm</li>
+            <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Tạo mới sản phẩm</h3>
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                                <i class="fas fa-folder-plus"></i> Thêm nhà cung cấp
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc">
+                                <i class="fas fa-folder-plus"></i> Thêm danh mục
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang">
+                                <i class="fas fa-folder-plus"></i> Thêm tình trạng
+                            </a>
+                        </div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <form asp-action="Create" class="row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Title" class="control-label">Tên xe</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div><div class="form-group col-md-3">
+                            <label asp-for="Brand" class="control-label">Thương hiệu</label>
+                            <input asp-for="Brand" class="form-control" />
+                            <span asp-validation-for="Brand" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="CarCategoryId" class="control-label">Loại xe</label>
+                            <select asp-for="CarCategoryId" class="form-control" asp-items="ViewBag.CarCategoryId">
+                                <option value="">-- Chọn loại xe --</option>
+                            </select>
+                            <span asp-validation-for="CarCategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="LicensePlate" class="control-label">Biển số xe</label>
+                            <input asp-for="LicensePlate" class="form-control" />
+                            <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Quantity" class="control-label">Số lượng xe</label>
+                            <input asp-for="Quantity" class="form-control" type="number" />
+                            <span asp-validation-for="Quantity" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Price" class="control-label">Giá thuê</label>
+                            <input asp-for="Price" class="form-control" type="number" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        @* <div class="from-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-label" asp-for="IsActive" />Hiển thị
+                            </label>
+                        </div> *@
+@*                         <div class="form-group col-md-3">
+                            <label for="TinhTrangSelect" class="control-label">Trạng thái</label>
+                            <select class="form-control" id="TinhTrangSelect" asp-for="IsActive">
+                                <option value="">-- Chọn trạng thái --</option>
+                                <option value="true">Còn xe / Hiển thị</option>
+                                <option value="false">Hết xe / Ẩn</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label asp-for="Image" class="control-label">Ảnh</label>
+                            <div class="input-group mb-6">
+                                <div class="input-group-prepend">
+                                    <button type="button"
+                                            class="btn btn-success btn-image-picker h-100"
+                                            onclick="openDialog()">
+                                        <i class="fa fa-image mr-1"></i> Chọn ảnh
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control" id="file_input" asp-for="Image" aria-describedby="button-addon2">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label asp-for="Description" class="control-label">Mô tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group p-3">
+                            <button class="btn btn-save" type="submit" value="Create">Lưu lại</button>
+                            <a asp-action="Index" class="btn btn-cancel">Hủy bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@{
+    var summerNote = new PlantShop.Areas.Admin.Models.SummerNote("#Detail");
+    <partial name="_SummerNote" model="summerNote" />
+} *@ 
