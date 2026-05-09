@@ -1,0 +1,93 @@
+﻿@model PlantShop.Models.TbOrder
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Area Start -->
+<section class="breadcrumb-area bg-img bg-overlay" style="background-image: url(/assets/img/bg-img/1.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="breadcrumb-content text-center">
+                    <h2>Đặt hàng thành công</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="/Cart">Giỏ hàng</a></li>
+                            <li class="breadcrumb-item active">Thành công</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Area End -->
+<!-- Order Success Area Start -->
+<section class="order-success-area section-padding-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 text-center">
+                <div class="success-icon mb-4">
+                    <i class="fa fa-check-circle" style="font-size: 80px; color: #28a745;"></i>
+                </div>
+                <h2 class="mb-3 text-success">Cảm ơn bạn đã đặt hàng!</h2>
+                <p class="mb-4">Đơn hàng của bạn đã được ghi nhận và sẽ được xử lý trong thời gian sớm nhất.</p>
+
+                <div class="order-info bg-light p-4 rounded text-start mb-4">
+                    <h5 class="mb-3">Thông tin đơn hàng</h5>
+                    <table class="table table-borderless mb-0">
+                        <tr>
+                            <td style="width: 150px;"><strong>Mã đơn hàng:</strong></td>
+                            <td class="text-primary fw-bold">@Model.Code</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ngày đặt:</strong></td>
+                            <td>@(Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm"))</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tổng tiền:</strong></td>
+                            <td class="text-danger fw-bold fs-5">@(Model.TotalAmount?.ToString("N0"))₫</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phương thức thanh toán:</strong></td>
+                            <td>
+                                @if (Model.PaymentMethod == "COD")
+                                {
+                                    <span><i class="fa fa-truck"></i> Thanh toán khi nhận hàng (COD)</span>
+                                }
+                                else if (Model.PaymentMethod == "BankTransfer")
+                                {
+                                    <span><i class="fa fa-university"></i> Chuyển khoản ngân hàng</span>
+                                }
+                                else
+                                {
+                                    <span><i class="fa fa-credit-card"></i> @Model.PaymentMethod</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Địa chỉ giao hàng:</strong></td>
+                            <td>@Model.Address</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ghi chú:</strong></td>
+                            <td>@(string.IsNullOrEmpty(Model.Note) ? "Không có" : Model.Note)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="/" class="btn btn-success px-4 py-2">
+                        <i class="fa fa-home"></i> Về trang chủ
+                    </a>
+                    <a href="/Product" class="btn btn-outline-success px-4 py-2 ms-2">
+                        <i class="fa fa-leaf"></i> Mua thêm sản phẩm
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Order Success Area End -->

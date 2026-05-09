@@ -38,8 +38,8 @@
                         <div class="top-header-content d-flex align-items-center justify-content-between">
                             <!-- Top Header Content -->
                             <div class="top-header-meta">
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="vinhuni@gmail.com"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span>Email: infodeercreative@gmail.com</span></a>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="+84 238 3855 452"><i class="fa fa-phone" aria-hidden="true"></i> <span>Call Us: +1 234 122 122</span></a>
+                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="vinhuni@gmail.com"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span>Email: vinhuni@gmail.com</span></a>
+                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="+84 238 3855 452"><i class="fa fa-phone" aria-hidden="true"></i> <span>Call Us: +84 238 3855 452</span></a>
                             </div>
 
                             <!-- Top Header Content -->
@@ -173,6 +173,15 @@
                                     <li><a href="portfolio.html">Portfolio</a></li>
                                     <li><a href="contact.html">Contact</a></li> *@
                                     @await Component.InvokeAsync("MenuTop")
+                                    <!-- Trong phần header, thêm icon giỏ hàng -->
+                                    <!-- Trong phần header, thêm icon giỏ hàng -->
+                                    <a href="/Cart" class="cart-icon position-relative me-3">
+                                        <i class="fa fa-shopping-cart fa-lg"></i>
+                                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                              style="font-size: 10px; margin-top: -5px;">
+                                            0
+                                        </span>
+                                    </a>
                                 </ul>
 
                                 <!-- Search Icon -->
@@ -630,6 +639,24 @@
             function scrollToBottom() {
                  $('#chatBody').scrollTop($('#chatBody')[0].scrollHeight);
             }
+        });
+    </script>
+
+
+
+    <script>
+        function updateCartCount() {
+            $.ajax({
+                url: '/Cart/GetCartCount',
+                type: 'GET',
+                success: function(data) {
+                    $('#cart-count').text(data);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            updateCartCount();
         });
     </script>
 </body>

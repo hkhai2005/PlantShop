@@ -1,147 +1,248 @@
-﻿@model List<PlantShop.Models.TbProduct>
-
+﻿@model PlantShop.Models.CartViewModel
 @{
-    ViewData["Title"] = "Giỏ hàng của bạn";
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .cart-table img {
-        width: 90px;
-        border-radius: 10px;
-    }
-
-    .cart-container {
-        padding: 40px 0;
-    }
-
-    .cart-card {
-        background: #fff;
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-
-    .qty-box {
-        display: flex;
-        align-items: center; /* Căn giữa theo chiều dọc */
-        justify-content: center; /* Căn giữa theo chiều ngang */
-        gap: 10px;
-    }
-
-    .qty-btn {
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center; /* Nút nằm chính giữa */
-        border-radius: 8px;
-        background: #f3f3f3;
-        border: 1px solid #ddd;
-        cursor: pointer;
-        font-size: 18px;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .qty-input {
-        width: 50px;
-        height: 36px;
-        text-align: center;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        font-size: 16px;
-    }
-
-    .btn-action {
-        border-radius: 8px;
-    }
-
-    tfoot tr td {
-        font-size: 18px;
-    }
-</style>
-
-<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/assets/images/car-2.jpg');" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-            <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs">
-                    <span class="mr-2"><a href="/">Trang chủ <i class="ion-ios-arrow-forward"></i></a></span>
-                    <span>Giỏ hàng<i class="ion-ios-arrow-forward"></i></span>
-                </p>
+<!-- Breadcrumb Area Start -->
+<section class="breadcrumb-area bg-img bg-overlay" style="background-image: url(/assets/img/bg-img/1.jpg);">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="breadcrumb-content text-center">
+                    <h2>Giỏ hàng của bạn</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                            <li class="breadcrumb-item active">Giỏ hàng</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
-<div class="container cart-container">
-    <div class="cart-card">
-
-        <h3 class="mb-4">🛒 Giỏ hàng của bạn (@Model.Count sản phẩm)</h3>
-
-        @if (Model.Count > 0)
+<!-- Breadcrumb Area End -->
+<!-- Cart Area Start -->
+<section class="cart-area section-padding-100">
+    <div class="container">
+        @if (Model.Items.Any())
         {
-            <table class="table cart-table">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Hình ảnh</th>
-                        <th>Tên xe</th>
-                        <th>Giá</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                <img src="@item.Image" />
-                            </td>
-                            <td class="align-middle">@item.Title</td>
-                            <td class="align-middle">@((item.Price ?? 0).ToString("n0")) VNĐ</td>
+            <div class="row">
+                <div class="col-12">
+                    <div class="cart-table clearfix">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-items">
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr data-product-id="@item.Product.ProductId">
+                                        <td class="cart-product-title">
+                                            <div class="d-flex align-items-center">
+                                                <img src="@(item.Product.Image ?? "/assets/img/bg-img/default.jpg")"
+                                                     alt="@item.Product.Title"
+                                                     style="width: 80px; height: 80px; object-fit: cover; margin-right: 15px;">
+                                                <a href="/Product/Detail/@item.Product.ProductId" class="fw-bold">
+                                                    @item.Product.Title
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td class="cart-product-price">
+                                            <span class="price-amount">@item.Price.ToString("N0")₫</span>
+                                        </td>
+                                        <td class="cart-product-quantity">
+                                            <div class="quantity d-flex align-items-center">
+                                                <button class="btn-minus btn btn-sm btn-outline-secondary">-</button>
+                                                <input type="number" class="qty-input form-control text-center mx-2"
+                                                       value="@item.Quantity" min="1" style="width: 60px;">
+                                                <button class="btn-plus btn btn-sm btn-outline-secondary">+</button>
+                                            </div>
+                                        </td>
+                                        <td class="cart-product-subtotal">
+                                            <span class="cart-amount fw-bold text-danger">@item.Total.ToString("N0")₫</span>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="remove-item text-danger" title="Xóa">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-                            <!-- Tăng giảm số lượng -->
-                            <td class="align-middle">
-                                <div class="qty-box">
-                                    <a asp-controller="Cart" asp-action="Decrease" asp-route-id="@item.ProductId" class="qty-btn">-</a>
-                                    <input class="qty-input" value="@item.Quantity" readonly />
-                                    <a asp-controller="Cart" asp-action="Increase" asp-route-id="@item.ProductId" class="qty-btn">+</a>
-                                </div>
-                            </td>
-
-                            @* <td class="align-middle">@item.Total.ToString("n0") VNĐ</td> *@
-                            <td class="align-middle">
-                                <a asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductId" class="btn btn-danger btn-sm btn-action">
-                                    Xóa
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-right"><strong>Tổng cộng:</strong></td>
-                        @* <td colspan="2"><strong>@Model.Sum(x => x.Total).ToString("n0") VNĐ</strong></td> *@
-                    </tr>
-                </tfoot>
-            </table>
-
-            <div class="mt-4 text-center">
-                <a href="/" class="btn btn-outline-secondary btn-action mr-2">Tiếp tục thuê xe</a>
-                <a asp-controller="Checkout" asp-action="Index" class="btn btn-success btn-action px-4">
-                    Tiến hành thanh toán
-                </a>
+            <div class="row justify-content-end">
+                <div class="col-12 col-md-5">
+                    <div class="cart-summary bg-light p-4 rounded">
+                        <h5 class="mb-3">Tổng giỏ hàng</h5>
+                        <ul class="list-unstyled">
+                            <li class="d-flex justify-content-between py-2">
+                                <span>Tạm tính:</span>
+                                <span id="subtotal">@Model.SubTotal.ToString("N0")₫</span>
+                            </li>
+                            <li class="d-flex justify-content-between py-2">
+                                <span>Phí vận chuyển:</span>
+                                <span id="shipping-fee">@Model.ShippingFee.ToString("N0")₫</span>
+                            </li>
+                            <li class="d-flex justify-content-between py-2 border-top mt-2 pt-2 fw-bold">
+                                <span>Tổng cộng:</span>
+                                <span id="total" class="text-danger fs-4">@Model.Total.ToString("N0")₫</span>
+                            </li>
+                        </ul>
+                        <div class="checkout-btn mt-3">
+                            <a href="/Cart/Checkout" class="btn btn-success w-100 py-2 fw-bold">
+                                <i class="fa fa-credit-card"></i> Tiến hành thanh toán
+                            </a>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <a href="/Home" class="text-muted">
+                                <i class="fa fa-arrow-left"></i> Tiếp tục mua sắm
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
         else
         {
-            <div class="alert alert-warning text-center">Giỏ hàng của bạn đang trống!</div>
-            <div class="text-center">
-                <a href="/" class="btn btn-primary btn-action">Quay lại trang chủ</a>
+            <div class="text-center py-5">
+                <i class="fa fa-shopping-cart fa-4x text-muted mb-3"></i>
+                <h3>Giỏ hàng của bạn đang trống</h3>
+                <p>Hãy thêm sản phẩm vào giỏ hàng để tiếp tục mua sắm.</p>
+                <a href="/Product" class="btn btn-success mt-3">Xem sản phẩm</a>
             </div>
         }
     </div>
-</div>
+</section>
+<!-- Cart Area End -->
+
+<style>
+    .cart-table table {
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .cart-table th {
+        background: #f8f9fa;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .cart-table td {
+        padding: 15px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .cart-product-title {
+        text-align: left;
+    }
+
+    .quantity input::-webkit-inner-spin-button,
+    .quantity input::-webkit-outer-spin-button {
+        opacity: 1;
+    }
+
+    .btn-minus, .btn-plus {
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function updateCartSummary() {
+            var subtotal = 0;
+            $('#cart-items tr').each(function() {
+                var amountText = $(this).find('.cart-amount').text();
+                var amount = parseFloat(amountText.replace(/[^0-9]/g, ''));
+                if (!isNaN(amount)) subtotal += amount;
+            });
+            var shippingFee = $('#cart-items tr').length > 0 ? 30000 : 0;
+            var total = subtotal + shippingFee;
+
+            $('#subtotal').text(subtotal.toLocaleString('vi-VN') + '₫');
+            $('#shipping-fee').text(shippingFee.toLocaleString('vi-VN') + '₫');
+            $('#total').text(total.toLocaleString('vi-VN') + '₫');
+        }
+
+        $(document).ready(function() {
+            // Xử lý nút giảm số lượng
+            $('.btn-minus').click(function() {
+                var input = $(this).siblings('.qty-input');
+                var val = parseInt(input.val());
+                if (val > 1) {
+                    input.val(val - 1).trigger('change');
+                }
+            });
+
+            // Xử lý nút tăng số lượng
+            $('.btn-plus').click(function() {
+                var input = $(this).siblings('.qty-input');
+                var val = parseInt(input.val());
+                input.val(val + 1).trigger('change');
+            });
+
+            // Xử lý thay đổi số lượng
+            $('.qty-input').change(function() {
+                var row = $(this).closest('tr');
+                var productId = row.data('product-id');
+                var quantity = parseInt($(this).val());
+                var priceText = row.find('.price-amount').text();
+                var price = parseFloat(priceText.replace(/[^0-9]/g, ''));
+
+                $.ajax({
+                    url: '/Cart/UpdateQuantity',
+                    type: 'POST',
+                    data: { productId: productId, quantity: quantity },
+                    success: function(res) {
+                        if (res.success) {
+                            row.find('.cart-amount').text(res.itemTotal.toLocaleString('vi-VN') + '₫');
+                            $('#subtotal').text(res.subTotal.toLocaleString('vi-VN') + '₫');
+                            $('#shipping-fee').text(res.shippingFee.toLocaleString('vi-VN') + '₫');
+                            $('#total').text(res.total.toLocaleString('vi-VN') + '₫');
+                            $('#cart-count').text(res.cartCount);
+                        }
+                    }
+                });
+            });
+
+            // Xóa sản phẩm
+            $('.remove-item').click(function(e) {
+                e.preventDefault();
+                var row = $(this).closest('tr');
+                var productId = row.data('product-id');
+
+                $.ajax({
+                    url: '/Cart/RemoveFromCart',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function(res) {
+                        if (res.success) {
+                            row.remove();
+                            updateCartSummary();
+                            if ($('#cart-items tr').length === 0) {
+                                location.reload();
+                            }
+                            $('#cart-count').text(res.cartCount);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

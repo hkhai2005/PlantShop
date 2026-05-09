@@ -1,0 +1,31 @@
+﻿@model PlantShop.Models.CartViewModel
+
+@foreach (var item in Model.Items)
+{
+    <div class="order-item d-flex justify-content-between mb-3 pb-2 border-bottom">
+        <div>
+            <span class="fw-bold">@item.Product.Title</span>
+            <span class="text-muted ms-2">x @item.Quantity</span>
+        </div>
+        <span class="text-danger">@item.Total.ToString("N0")₫</span>
+    </div>
+}
+
+<div class="order-total mt-3 pt-2">
+    <div class="d-flex justify-content-between mb-2">
+        <span>Tạm tính:</span>
+        <span>@Model.SubTotal.ToString("N0")₫</span>
+    </div>
+    <div class="d-flex justify-content-between mb-2">
+        <span>Phí vận chuyển:</span>
+        <span>@Model.ShippingFee.ToString("N0")₫</span>
+    </div>
+    <div class="d-flex justify-content-between mb-2 text-danger">
+        <span>Giảm giá:</span>
+        <span>-@Model.Discount.ToString("N0")₫</span>
+    </div>
+    <div class="d-flex justify-content-between pt-2 border-top mt-2 fw-bold">
+        <span>Tổng cộng:</span>
+        <span class="text-danger fs-5">@Model.Total.ToString("N0")₫</span>
+    </div>
+</div>
