@@ -1,0 +1,128 @@
+﻿@model PlantShop.Models.TbAccount
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách nhân viên</li>
+            <li class="breadcrumb-item"><a href="#">Chi tiết nhân viên</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title-w-btn">
+                    <h3 class="title">Chi tiết nhân viên: @Model.FullName</h3>
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@Model.AccountId" class="btn btn-primary"><i class="fa fa-edit"></i> Sửa thông tin</a>
+                        <a asp-action="Index" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Quay lại</a>
+                    </div>
+                </div>
+                <div class="tile-body">
+                    <div class="row">
+                        <!-- CỘT TRÁI: HÌNH ẢNH & WIDGET -->
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center p-2">
+                                    @* @if (!string.IsNullOrEmpty(Model.Image))
+                                    {
+                                        <img src="@Model.Image" alt="@Model.FullName" class="img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-secondary m-0" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa fa-user fa-5x text-muted"></i>
+                                        </div>
+                                    } *@
+                                </div>
+                                <div class="card-footer text-muted text-center small">
+                                    Mã NV: #@Model.AccountId
+                                </div>
+                            </div>
+
+                            <!-- Thống kê nhanh: Chức vụ -->
+                            <div class="widget-small primary coloured-icon">
+                                <i class="icon fa fa-id-badge fa-3x"></i>
+                                <div class="info">
+                                    <h4>Chức vụ</h4>
+                                    <p><b>@Html.DisplayFor(model => model.Role.RoleName)</b></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CỘT PHẢI: THÔNG TIN CHI TIẾT -->
+                        <div class="col-md-8">
+                            <!-- 1. Thông tin tài khoản -->
+                            <h5 class="border-bottom pb-2">Thông tin tài khoản</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Tên đăng nhập:</strong> <span class="text-primary">@Html.DisplayFor(model => model.Username)</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Mật khẩu:</strong> @Html.DisplayFor(model => model.Password)
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <strong>Lần đăng nhập cuối:</strong>
+                                    <span class="text-muted">@Html.DisplayFor(model => model.LastLogin)</span>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <strong>Trạng thái:</strong>
+                                    @if (Model.IsActive == true)
+                                    {
+                                        <span class="badge badge-success">Đang hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Đã khóa</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- 2. Thông tin cá nhân -->
+                            <h5 class="border-bottom pb-2 mt-4">Thông tin cá nhân</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-2">
+                                    <small class="text-muted d-block">Họ và tên</small>
+                                    <b>@Html.DisplayFor(model => model.FullName)</b>
+                                </div>
+                                @* <div class="col-md-6 mb-2">
+                                    <small class="text-muted d-block">Giới tính</small>
+                                    <b>@Html.DisplayFor(model => model.Gender)</b>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <small class="text-muted d-block">Ngày sinh</small>
+                                    <b>@Html.DisplayFor(model => model.DateOfBirth)</b>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <small class="text-muted d-block">CCCD/CMND</small>
+                                    <b>@Html.DisplayFor(model => model.Cccd)</b>
+                                </div> *@
+                            </div>
+
+                            <!-- 3. Thông tin liên hệ -->
+                            <h5 class="border-bottom pb-2 mt-4">Thông tin liên hệ</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong><i class="fa fa-phone"></i> Điện thoại:</strong>
+                                    <a href="tel:@Model.Phone">@Html.DisplayFor(model => model.Phone)</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong><i class="fa fa-envelope"></i> Email:</strong>
+                                    <a href="mailto:@Model.Email">@Html.DisplayFor(model => model.Email)</a>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <strong><i class="fa fa-map-marker"></i> Địa chỉ:</strong>
+                                    @* <span>@Html.DisplayFor(model => model.Address)</span> *@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

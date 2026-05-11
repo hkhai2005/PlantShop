@@ -1,0 +1,101 @@
+﻿@model PlantShop.Models.TbAccount
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách nhân viên</li>
+            <li class="breadcrumb-item"><a href="#">Xóa nhân viên</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Xác nhận xóa nhân viên</h3>
+                <div class="tile-body">
+
+                    <!-- Cảnh báo -->
+                    <div class="alert alert-warning text-center">
+                        <i class="fa fa-exclamation-triangle fa-2x mb-2"></i><br />
+                        <strong>Cảnh báo:</strong> Bạn đang thực hiện xóa tài khoản nhân viên <strong>@Model.Username</strong>. Hành động này không thể hoàn tác!
+                    </div>
+
+                    <div class="row d-flex justify-content-center mt-4">
+                        @* <!-- Hiển thị ảnh đại diện -->
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.Image))
+                            {
+                                <!-- Thêm style object-fit để ảnh nhân viên không bị méo -->
+                                <img src="@Model.Image" alt="@Model.FullName" class="img-fluid rounded shadow-sm" style="max-height: 250px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <div class="p-5 bg-light border rounded">
+                                    <i class="fa fa-user fa-3x text-secondary"></i>
+                                    <p class="mt-2">Không có ảnh đại diện</p>
+                                </div>
+                            }
+                        </div> *@
+
+                        <!-- Thông tin tóm tắt -->
+                        <div class="col-md-6">
+                            <h3 class="text-primary">@Html.DisplayFor(model => model.FullName)</h3>
+                            <dl class="row mt-3">
+                                <dt class="col-sm-4">Tài khoản (User):</dt>
+                                <dd class="col-sm-8 font-weight-bold">@Html.DisplayFor(model => model.Username)</dd>
+
+                                <dt class="col-sm-4">Số điện thoại:</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Phone)</dd>
+
+                                <dt class="col-sm-4">Email:</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+                                <dt class="col-sm-4">CCCD/CMND:</dt>
+
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Phone)</dd>
+
+                                <dt class="col-sm-4">Chức vụ:</dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.Role.RoleName)
+                                </dd>
+
+                                <dt class="col-sm-4">Trạng thái:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive == true)
+                                    {
+                                        <span class="badge badge-success">Đang hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">Đã khóa/Ẩn</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="tile-footer text-center mt-3">
+                    <form asp-action="Delete">
+                        <!-- Quan trọng: Đổi CarId thành AccountId theo Model TbAccount -->
+                        <input type="hidden" asp-for="AccountId" />
+
+                        <button type="submit" class="btn btn-danger btn-lg px-4">
+                            <i class="fa fa-trash"></i> Xóa vĩnh viễn
+                        </button>
+
+                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4 ml-2">
+                            <i class="fa fa-times"></i> Hủy bỏ
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

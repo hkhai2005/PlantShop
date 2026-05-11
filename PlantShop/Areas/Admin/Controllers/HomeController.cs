@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using PlantShop.Utilities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PlantShop.Areas.Admin.Controllers
 {
@@ -7,6 +8,8 @@ namespace PlantShop.Areas.Admin.Controllers
         [Area("Admin")]
         public IActionResult Index()
         {
+            if (!Function.IsLogin())
+                return RedirectToAction("Index", "Login");
             return View();
         }
     }

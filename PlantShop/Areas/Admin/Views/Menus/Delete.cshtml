@@ -1,0 +1,109 @@
+﻿@model PlantShop.Models.TbMenu
+
+@{
+    ViewData["Title"] = "Xóa Menu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<main class="app-content">
+<div class="content-wrapper">
+    <!-- Header -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="text-danger">
+                        @* <i class="fas fa-trash-alt"></i> Xóa Menu *@
+                    </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                        <li class="breadcrumb-item"><a asp-action="Index">Quản lý menu</a></li>
+                        <li class="breadcrumb-item active">Xóa</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nội dung -->
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i> Bạn có chắc muốn xóa?</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p class="text-muted">Thông tin menu sẽ bị xóa vĩnh viễn. Vui lòng kiểm tra kỹ:</p>
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-6">
+                            <dl class="row align-items-center" style="line-height: 2;">
+                                <dt class="col-sm-4 text-muted text-end">Tiêu đề:</dt>
+                                <dd class="col-sm-8">@Model.Title</dd>
+
+                                <dt class="col-sm-4 text-muted text-end">Alias:</dt>
+                                <dd class="col-sm-8">@Model.Alias</dd>
+
+                                <dt class="col-sm-4 text-muted text-end">Mô tả:</dt>
+                                <dd class="col-sm-8">@Model.Description</dd>
+
+                                <dt class="col-sm-4 text-muted text-end">Mức:</dt>
+                                <dd class="col-sm-8">@Model.Levels</dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-6">
+                            <dl class="row align-items-center" style="line-height: 2;">
+                                <dt class="col-sm-4 text-muted text-end">Menu cha:</dt>
+                                <dd class="col-sm-8">@Model.ParentId</dd>
+
+                                <dt class="col-sm-4 text-muted text-end">Vị trí:</dt>
+                                <dd class-sm-8">@Model.Position</dd>
+
+                                <dt class="col-sm-8 text-muted text-end">Hiển thị:</dt>
+                                <dd class="col">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-success">Đang hiển thị</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Ẩn</span>
+                                    }
+                                </dd>
+                                
+                            </dl>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="card-footer text-right">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="MenuId" />
+
+                        <button type="submit" class="btn btn-danger mr-2">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Quay lại
+                        </a>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>
+</main>

@@ -1,0 +1,133 @@
+﻿@model PlantShop.Models.TbAccount
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Danh sách nhân viên</li>
+            <li class="breadcrumb-item"><a href="#">Thêm nhân viên</a></li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Tạo mới nhân viên</h3>
+                <div class="tile-body">
+                    <!-- Phần nút bấm mở rộng (nếu cần) -->
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                                <i class="fas fa-folder-plus"></i> Thêm chức vụ
+                            </a>
+                        </div>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <!-- Form nhập liệu -->
+                    <form asp-action="Create" class="row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Hàng 1: Thông tin đăng nhập & Cơ bản -->
+                        <div class="form-group col-md-4">
+                            <label asp-for="Username" class="control-label">Tên đăng nhập</label>
+                            <input asp-for="Username" class="form-control" required />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Password" class="control-label">Mật khẩu</label>
+                            <input asp-for="Password" type="password" class="form-control" required />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="FullName" class="control-label">Họ và tên</label>
+                            <input asp-for="FullName" class="form-control" required />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Hàng 2: Liên hệ & Cá nhân -->
+                        <div class="form-group col-md-4">
+                            <label asp-for="Phone" class="control-label">Số điện thoại</label>
+                            <input asp-for="Phone" class="form-control" type="number" required />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Email" class="control-label">Địa chỉ Email</label>
+                            <input asp-for="Email" class="form-control" type="email" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        @* <div class="form-group col-md-4">
+                            <label asp-for="DateOfBirth" class="control-label">Ngày sinh</label>
+                            <input asp-for="DateOfBirth" class="form-control" type="date" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+
+                        <!-- Hàng 3: Định danh & Vai trò -->
+                        <div class="form-group col-md-4">
+                            <label asp-for="Cccd" class="control-label">Số CCCD</label>
+                            <input asp-for="Cccd" class="form-control" type="number" />
+                            <span asp-validation-for="Cccd" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="RoleId" class="control-label">Chức vụ</label>
+                            <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId">
+                                <option value="">-- Chọn chức vụ --</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Gender" class="control-label">Giới tính</label>
+                            <select asp-for="Gender" class="form-control" id="gioiTinhSelect">
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label asp-for="IsActive" class="control-label">Trạng thái</label>
+                            <select asp-for="IsActive" class="form-control">
+                                <option value="true">Hoạt động</option>
+                                <option value="false">Tạm khóa</option>
+                            </select>
+                        </div>
+
+                        <!-- Hàng 4: Địa chỉ -->
+                        <div class="form-group col-md-12">
+                            <label asp-for="Address" class="control-label">Địa chỉ thường trú</label>
+                            <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- Hàng 5: Ảnh đại diện (Giống mẫu) -->
+                        <div class="form-group col-md-12">
+                            <label asp-for="Image" class="control-label">Ảnh thẻ</label>
+                            <div class="input-group mb-6">
+                                <div class="input-group-prepend">
+                                    <button type="button"
+                                            class="btn btn-success btn-image-picker h-100"
+                                            onclick="openDialog()">
+                                        <i class="fa fa-image mr-1"></i> Chọn ảnh
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control" id="file_input" asp-for="Image" aria-describedby="button-addon2">
+                            </div>
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div> *@
+
+                        <!-- Nút hành động -->
+                        <div class="form-group col-md-12">
+                            <button class="btn btn-save" type="submit">Lưu lại</button>
+                            <a asp-action="Index" class="btn btn-cancel">Hủy bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@{
+    var summerNote = new PlantShop.Areas.Admin.Models.SummerNote("#Detail");
+    <partial name="_SummerNote" model="summerNote" />
+}

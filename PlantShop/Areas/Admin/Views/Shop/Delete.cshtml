@@ -1,4 +1,4 @@
-﻿@* @model PlantShop.Models.TbProduct
+﻿@model PlantShop.Models.TbProduct
 @{
     ViewData["Title"] = "Delete";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -41,13 +41,13 @@
                             <h3 class="text-primary">@Html.DisplayFor(model => model.Title)</h3>
                             <dl class="row mt-3">
                                 <dt class="col-sm-4">Thương hiệu:</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Brand)</dd>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Sku)</dd>
 
                                 <dt class="col-sm-4">Biển số xe:</dt>
-                                <dd class="col-sm-8 font-weight-bold">@Html.DisplayFor(model => model.LicensePlate)</dd>
+                                <dd class="col-sm-8 font-weight-bold">@Html.DisplayFor(model => model.Tags)</dd>
 
                                 <dt class="col-sm-4">Loại xe:</dt>
-                                <dd class="col-sm-8">@(Model.CarCategory != null ? Model.CarCategory.Title : "---")</dd>
+                                <dd class="col-sm-8">@(Model.CategoryProduct != null ? Model.CategoryProduct.Title : "---")</dd>
 
                                 <dt class="col-sm-4">Giá thuê:</dt>
                                 <dd class="col-sm-8 text-danger font-weight-bold">@string.Format("{0:n0}", Model.Price) VNĐ</dd>
@@ -73,7 +73,7 @@
                 <!-- Nút hành động -->
                 <div class="tile-footer text-center mt-3">
                     <form asp-action="Delete">
-                        <input type="hidden" asp-for="CarId" />
+                        <input type="hidden" asp-for="ProductId" />
 
                         <button type="submit" class="btn btn-danger btn-lg px-4">
                             <i class="fa fa-trash"></i> Xóa vĩnh viễn
@@ -87,4 +87,4 @@
             </div>
         </div>
     </div>
-</main> *@
+</main>

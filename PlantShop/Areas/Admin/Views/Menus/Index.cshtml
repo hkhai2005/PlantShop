@@ -1,0 +1,85 @@
+﻿@model IEnumerable<PlantShop.Models.TbMenu>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<main class="app-content">
+
+    <!-- Page Header -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Quản lý menu</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Menu</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <a asp-action="Create" class="btn btn-success">Thêm mới</a>
+                    </h3>
+                </div>
+
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tiêu đề</th>
+                                <th>Alias</th>
+                                <th>Cấp</th>
+                                <th>Vị trí</th>
+                                <th>Hiện</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@(i++)</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.Alias</td>
+                                    <td>@item.Levels</td>
+                                    <td>@item.Position</td>
+                                    <td>
+                                        @if(item.IsActive)
+                                        {
+                                            <span class="badge bg-success">Hiện</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Ẩn</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.MenuId" class="btn btn-warning btn-sm">Sửa</a>
+                                        <a asp-action="Details" asp-route-id="@item.MenuId" class="btn btn-info btn-sm">Chi tiết</a>
+                                        <a asp-action="Delete" asp-route-id="@item.MenuId" class="btn btn-danger btn-sm">Xóa</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>

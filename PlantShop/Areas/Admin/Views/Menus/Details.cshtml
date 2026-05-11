@@ -1,0 +1,120 @@
+﻿@model PlantShop.Models.TbMenu
+
+@{
+    ViewData["Title"] = "Chi tiết Menu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<main class="app-content">
+
+<div class="content-wrapper">
+
+    <!-- Header -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="text-primary">
+                        
+                    </h1>
+                </div>
+
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                        <li class="breadcrumb-item"><a asp-action="Index">Quản lý menu</a></li>
+                        <li class="breadcrumb-item active">Chi tiết</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nội dung -->
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">
+                        <i class="fas fa-info-circle"></i> Chi tiết Menu
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <!-- Cột trái -->
+                        <div class="col-md-6">
+                            <dl class="row">
+
+                                <dt class="col-sm-4 text-muted">Tiêu đề:</dt>
+                                <dd class="col-sm-8">@Model.Title</dd>
+
+                                <dt class="col-sm-4 text-muted">Alias:</dt>
+                                <dd class="col-sm-8">@Model.Alias</dd>
+
+                                <dt class="col-sm-4 text-muted">Mô tả:</dt>
+                                <dd class="col-sm-8">@Model.Description</dd>
+
+                                <dt class="col-sm-4 text-muted">Mức:</dt>
+                                <dd class="col-sm-8">@Model.Levels</dd>
+
+                                <dt class="col-sm-4 text-muted">Menu cha:</dt>
+                                <dd class="col-sm-8">@Model.ParentId</dd>
+
+                            </dl>
+                        </div>
+
+                        <!-- Cột phải -->
+                        <div class="col-md-6">
+                            <dl class="row">
+
+                                <dt class="col-sm-4 text-muted">Vị trí:</dt>
+                                <dd class="col-sm-8">@Model.Position</dd>
+
+                                <dt class="col-sm-4 text-muted">Ngày tạo:</dt>
+                                <dd class="col-sm-8">@Model.CreatedDate</dd>
+
+                                <dt class="col-sm-4 text-muted">Tạo bởi:</dt>
+                                <dd class="col-sm-8">@Model.CreatedBy</dd>
+
+                                <dt class="col-sm-4 text-muted">Ngày sửa:</dt>
+                                <dd class="col-sm-8">@Model.ModifiedDate</dd>
+
+                                <dt class="col-sm-4 text-muted">Hiển thị:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-success">Đang hiển thị</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Ẩn</span>
+                                    }
+                                </dd>
+
+                            </dl>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-right">
+                    <a class="btn btn-warning mr-2" asp-action="Edit" asp-route-id="@Model.MenuId">
+                        <i class="fas fa-edit"></i> Sửa
+                    </a>
+                    <a class="btn btn-secondary" asp-action="Index">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>
+</main>

@@ -1,4 +1,4 @@
-﻿@* @model PlantShop.Models.TbProduct
+﻿@model PlantShop.Models.TbProduct
 
 @{
     ViewData["Title"] = "Create";
@@ -41,21 +41,21 @@
                             <input asp-for="Title" class="form-control" />
                             <span asp-validation-for="Title" class="text-danger"></span>
                         </div><div class="form-group col-md-3">
-                            <label asp-for="Brand" class="control-label">Thương hiệu</label>
-                            <input asp-for="Brand" class="form-control" />
-                            <span asp-validation-for="Brand" class="text-danger"></span>
+                            <label asp-for="Sku" class="control-label">Thương hiệu</label>
+                            <input asp-for="Sku" class="form-control" />
+                            <span asp-validation-for="Sku" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label asp-for="CarCategoryId" class="control-label">Loại xe</label>
-                            <select asp-for="CarCategoryId" class="form-control" asp-items="ViewBag.CarCategoryId">
+                            <label asp-for="CategoryProductId" class="control-label">Loại xe</label>
+                            <select asp-for="CategoryProductId" class="form-control" asp-items="ViewBag.CarCategoryId">
                                 <option value="">-- Chọn loại xe --</option>
                             </select>
-                            <span asp-validation-for="CarCategoryId" class="text-danger"></span>
+                            <span asp-validation-for="CategoryProductId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label asp-for="LicensePlate" class="control-label">Biển số xe</label>
-                            <input asp-for="LicensePlate" class="form-control" />
-                            <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                            <label asp-for="Tags" class="control-label">Biển số xe</label>
+                            <input asp-for="Tags" class="form-control" />
+                            <span asp-validation-for="Tags" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
                             <label asp-for="Quantity" class="control-label">Số lượng xe</label>
@@ -67,12 +67,12 @@
                             <input asp-for="Price" class="form-control" type="number" />
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
-                        @* <div class="from-group form-check">
+                        <div class="from-group form-check">
                             <label class="form-check-label">
                                 <input class="form-check-label" asp-for="IsActive" />Hiển thị
                             </label>
-                        </div> *@
-@*                         <div class="form-group col-md-3">
+                        </div>
+                       <div class="form-group col-md-3">
                             <label for="TinhTrangSelect" class="control-label">Trạng thái</label>
                             <select class="form-control" id="TinhTrangSelect" asp-for="IsActive">
                                 <option value="">-- Chọn trạng thái --</option>
@@ -112,4 +112,4 @@
 @{
     var summerNote = new PlantShop.Areas.Admin.Models.SummerNote("#Detail");
     <partial name="_SummerNote" model="summerNote" />
-} *@ 
+} 
