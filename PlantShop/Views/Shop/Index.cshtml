@@ -30,16 +30,34 @@
             <div class="col-12">
                 <div class="shop-sorting-data d-flex flex-wrap align-items-center justify-content-between">
                     <div class="shop-page-count">
-                        <p>Showing @Model.Count results</p>
+                        <p>Hiển thị @Model.Count kết quả</p>
                     </div>
                     <div class="search_by_terms">
-                        <form action="#" method="post" class="form-inline">
-                            <select class="custom-select widget-title" id="sort-select">
+                        <form method="get">
+
+                            <!-- Giữ keyword khi sort -->
+                            <input type="hidden"
+                                   name="keyword"
+                                   value="@ViewBag.Keyword" />
+
+                            <select class="custom-select widget-title"
+                                    name="sort"
+                                    onchange="this.form.submit()">
                                 <option value="0">Sort by Default</option>
-                                <option value="1">Sort by Newest</option>
-                                <option value="2">Sort by Price: Low to High</option>
-                                <option value="3">Sort by Price: High to Low</option>
+                                <option value="1" selected="@(ViewBag.Sort == 1)">
+                                    Sort by Newest
+                                </option>
+
+                                <option value="2" selected="@(ViewBag.Sort == 2)">
+                                    Sort by Price: Low to High
+                                </option>
+
+                                <option value="3" selected="@(ViewBag.Sort == 3)">
+                                    Sort by Price: High to Low
+                                </option>
+
                             </select>
+
                         </form>
                     </div>
                 </div>
@@ -52,18 +70,43 @@
                 <div class="shop-sidebar-area">
                     <!-- Shop Widget Price -->
                     <div class="shop-widget price mb-50">
-                        <h4 class="widget-title">Prices</h4>
-                        <div class="widget-desc">
-                            <div class="slider-range">
-                                <div data-min="0" data-max="5000000" data-unit="₫" class="slider-range-price"></div>
-                                <div class="range-price">Price: 0₫ - 5,000,000₫</div>
-                            </div>
-                        </div>
+                        <h4 class="widget-title">Lọc Giá</h4>
+                        <form method="get" action="/Shop">
+
+                            <input type="hidden"
+                                   name="keyword"
+                                   value="@ViewBag.Keyword" />
+
+                            <input type="hidden"
+                                   name="sort"
+                                   value="@ViewBag.Sort" />
+
+                            <select class="custom-select widget-title"
+                                    name="price"
+                                    onchange="this.form.submit()">
+
+                                <option value="">All Prices</option>
+
+                                <option value="1">
+                                    Under 100.000₫
+                                </option>
+
+                                <option value="2">
+                                    100.000₫ - 300.000₫
+                                </option>
+
+                                <option value="3">
+                                    Above 300.000₫
+                                </option>
+
+                            </select>
+
+                        </form>
                     </div>
 
                     <!-- Shop Widget Categories -->
                     <div class="shop-widget catagory mb-50">
-                        <h4 class="widget-title">Categories</h4>
+                        <h4 class="widget-title">Sản Phẩm</h4>
                         <div class="widget-desc" id="category-list">
                             <!-- Categories sẽ load bằng AJAX hoặc bind từ ViewBag -->
                         </div>
@@ -72,7 +115,7 @@
             </div>
 
             <!-- All Products Area -->
-            <div class="col-12 col-md-8 col-lg-9">
+            <div class="col-12 ">
                 <div class="shop-products-area">
                     <div class="row" id="product-list">
                         @if (Model != null && Model.Any())

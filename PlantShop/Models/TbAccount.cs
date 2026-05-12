@@ -23,6 +23,14 @@ public partial class TbAccount
 
     public bool IsActive { get; set; }
 
+    public string? Image { get; set; }
+
+    public string? Address { get; set; }
+
+    public DateOnly? DateOfBirth { get; set; }
+
+    public string? Gender { get; set; }
+
     public virtual TbRole? Role { get; set; }
 
     public virtual ICollection<TbBlog> TbBlogs { get; set; } = new List<TbBlog>();

@@ -45,8 +45,8 @@ namespace PlantShop.Areas.Admin.Controllers
             // GET: Admin/Cars/Create
             public IActionResult Create()
             {
-                ViewData["CarCategoryId"] = new SelectList(_context.TbProductCategories, "CarCategoryId", "Title");
-                return View();
+            ViewData["CategoryProductId"] = new SelectList(_context.TbProductCategories, "CategoryProductId", "Title");
+            return View();
             }
 
             // POST: Admin/Cars/Create
@@ -54,8 +54,8 @@ namespace PlantShop.Areas.Admin.Controllers
             // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Create([Bind("CarId,Title,Alias,CarCategoryId,Brand,Model,Seats,Transmission,FuelType,Year,LicensePlate,Description,Detail,Image,Price,PriceSale,Quantity,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy,IsNew,IsBestSeller,UnitInStock,IsActive,Star")] TbProduct tbCar)
-            {
+        public async Task<IActionResult> Create([Bind("ProductId,Title,Alias,CategoryProductId,Description,Detail,Image,Price,PriceSale,Quantity,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy,IsNew,IsBestSeller,IsFeatured,UnitInStock,IsActive,Star,SKU,Weight,Dimensions,Views,SoldCount,Tags")] TbProduct tbCar)
+        {
                 if (ModelState.IsValid)
                 {
                     tbCar.Alias = PlantShop.Utilities.Function.TitleSlugGenerationAlias(tbCar.Title);
@@ -75,22 +75,22 @@ namespace PlantShop.Areas.Admin.Controllers
                     return NotFound();
                 }
 
-                var tbCar = await _context.TbProducts.FindAsync(id);
-                if (tbCar == null)
-                {
-                    return NotFound();
-                }
-                ViewData["CarCategoryId"] = new SelectList(_context.TbProductCategories, "CarCategoryId", "Title", tbCar.CategoryProductId);
-                return View(tbCar);
+            var tbCar = await _context.TbProducts.FindAsync(id);
+            if (tbCar == null)
+            {
+                return NotFound();
             }
+            ViewData["CategoryProductId"] = new SelectList(_context.TbProductCategories, "CategoryProductId", "Title", tbCar.CategoryProductId);
+            return View(tbCar);
+        }
 
             // POST: Admin/Cars/Edit/5
             // To protect from overposting attacks, enable the specific properties you want to bind to.
             // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Edit(int id, [Bind("CarId,Title,Alias,CarCategoryId,Brand,Model,Seats,Transmission,FuelType,Year,LicensePlate,Description,Detail,Image,Price,PriceSale,Quantity,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy,IsNew,IsBestSeller,UnitInStock,IsActive,Star")] TbProduct tbCar)
-            {
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Title,Alias,CategoryProductId,Description,Detail,Image,Price,PriceSale,Quantity,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy,IsNew,IsBestSeller,IsFeatured,UnitInStock,IsActive,Star,SKU,Weight,Dimensions,Views,SoldCount,Tags")] TbProduct tbCar)
+        {
                 if (id != tbCar.ProductId)
                 {
                     return NotFound();
@@ -142,19 +142,51 @@ namespace PlantShop.Areas.Admin.Controllers
             // POST: Admin/Cars/Delete/5
             [HttpPost, ActionName("Delete")]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var product = await _context.TbProducts.FindAsync(id);
+
+            if (product != null)
             {
-                var tbCar = await _context.TbProducts.FindAsync(id);
-                if (tbCar != null)
-                {
-                    _context.TbProducts.Remove(tbCar);
-                }
+                // 1. Xóa ảnh sản phẩm
+                var images = _context.TbProductImages
+                    .Where(x => x.ProductId == id);
+                _context.TbProductImages.RemoveRange(images);
+
+                // 2. Xóa thuộc tính sản phẩm
+                var attributes = _context.TbProductAttributes
+                    .Where(x => x.ProductId == id);
+                _context.TbProductAttributes.RemoveRange(attributes);
+
+                // 3. Xóa chi tiết đơn hàng
+                var orderDetails = _context.TbOrderDetails
+                    .Where(x => x.ProductId == id);
+                _context.TbOrderDetails.RemoveRange(orderDetails);
+
+                // 4. Xóa wishlist
+                var wishlists = _context.TbWishlists
+                    .Where(x => x.ProductId == id);
+                _context.TbWishlists.RemoveRange(wishlists);
+
+                // 5. Xóa đánh giá
+                var reviews = _context.TbProductReviews
+                    .Where(x => x.ProductId == id);
+                _context.TbProductReviews.RemoveRange(reviews);
+
+                // 6. Xóa giỏ hàng
+                var carts = _context.TbCartDetails
+                    .Where(x => x.ProductId == id);
+                _context.TbCartDetails.RemoveRange(carts);
+
+                // Cuối cùng xóa Product
+                _context.TbProducts.Remove(product);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
 
-            private bool TbCarExists(int id)
+            return RedirectToAction(nameof(Index));
+        }
+        private bool TbCarExists(int id)
             {
                 return _context.TbProducts.Any(e => e.ProductId == id);
             }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlantShop.Models;
 
-namespace Do_An_Thue_Xe.Areas.Admin.Controllers
+namespace PlantShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AccountsController : Controller

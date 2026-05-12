@@ -1,6 +1,7 @@
 ﻿@model PlantShop.Models.TbProduct
+
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,81 +9,161 @@
     <div class="app-title">
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item">Danh sách sản phẩm</li>
-            <li class="breadcrumb-item"><a href="#">Xóa sản phẩm</a></li>
+            <li class="breadcrumb-item"><a href="#">Chi tiết sản phẩm</a></li>
         </ul>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Xác nhận xóa sản phẩm</h3>
-                <div class="tile-body">
-
-                    <!-- Cảnh báo -->
-                    <div class="alert alert-warning text-center">
-                        <i class="fa fa-exclamation-triangle fa-2x mb-2"></i><br />
-                        <strong>Cảnh báo:</strong> Bạn đang thực hiện xóa sản phẩm. Hành động này không thể hoàn tác!
+                <div class="tile-title-w-btn">
+                    <h3 class="title">Chi tiết xe: @Model.Title</h3>
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-primary"><i class="fa fa-edit"></i> Sửa thông tin</a>
+                        <a asp-action="Index" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Quay lại</a>
                     </div>
-
-                    <div class="row d-flex justify-content-center mt-4">
-                        <!-- Hiển thị ảnh để xác nhận đúng xe -->
-                        <div class="col-md-4 text-center">
-                            @if (!string.IsNullOrEmpty(Model.Image))
-                            {
-                                <img src="@Model.Image" alt="@Model.Title" class="img-fluid rounded shadow-sm" style="max-height: 250px;" />
-                            }
-                            else
-                            {
-                                <div class="p-5 bg-light border rounded">Không có hình ảnh</div>
-                            }
-                        </div>
-
-                        <!-- Thông tin tóm tắt -->
-                        <div class="col-md-6">
-                            <h3 class="text-primary">@Html.DisplayFor(model => model.Title)</h3>
-                            <dl class="row mt-3">
-                                <dt class="col-sm-4">Thương hiệu:</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Sku)</dd>
-
-                                <dt class="col-sm-4">Biển số xe:</dt>
-                                <dd class="col-sm-8 font-weight-bold">@Html.DisplayFor(model => model.Tags)</dd>
-
-                                <dt class="col-sm-4">Loại xe:</dt>
-                                <dd class="col-sm-8">@(Model.CategoryProduct != null ? Model.CategoryProduct.Title : "---")</dd>
-
-                                <dt class="col-sm-4">Giá thuê:</dt>
-                                <dd class="col-sm-8 text-danger font-weight-bold">@string.Format("{0:n0}", Model.Price) VNĐ</dd>
-
-                                <dt class="col-sm-4">Trạng thái:</dt>
-                                <dd class="col-sm-8">
-                                    @if (Model.IsActive)
+                </div>
+                <div class="tile-body">
+                    <div class="row">
+                        <!-- CỘT TRÁI: HÌNH ẢNH -->
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center p-2">
+                                    @if (!string.IsNullOrEmpty(Model.Image))
                                     {
-                                        <span>Đang hiển thị</span>
+                                        <img src="@Url.Content("~/" + Model.Image.Replace("../", ""))"
+                                             alt="@Model.Title"
+                                             class="img-fluid rounded"
+                                             style="width: 80px; height: 60px; object-fit: contain;" />
                                     }
                                     else
                                     {
-
-                                        <span>Đang ẩn</span>
+                                        <div class="alert alert-secondary m-0">Không có hình ảnh</div>
                                     }
-                                </dd>
-                            </dl>
+                                </div>
+                                <div class="card-footer text-muted text-center small">
+                                    @Model.Title
+                                </div>
+                            </div>
+
+                            <!-- Thống kê nhanh -->
+                            <div class="widget-small primary coloured-icon">
+                                <i class="icon fa fa-money fa-3x"></i>
+                                <div class="info">
+                                    <h4>Giá thuê</h4>
+                                    <p><b>@string.Format("{0:n0}", Model.Price) VNĐ</b></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CỘT PHẢI: THÔNG TIN CHI TIẾT -->
+                        <div class="col-md-8">
+                            <!-- Bảng thông tin chung -->
+                            <h5 class="border-bottom pb-2">Thông tin chung</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Mã Loại Cây:</strong> @Html.DisplayFor(model => model.Sku)
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Tên:</strong>
+                                    @* Hiển thị tên loại xe nếu có, hoặc ID *@
+                                    @(Model.CategoryProduct != null ? Model.CategoryProduct.Title : Model.CategoryProduct.ToString())
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <strong>Tags:</strong> <span class="text-info">@Html.DisplayFor(model => model.Tags)</span>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <strong>Trạng thái:</strong>
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Đang hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Ngừng hoạt động</span>
+                                    }
+                                    @if (Model.IsNew)
+                                    {
+                                        <span class="badge badge-info ml-1">Xe mới</span>
+                                    }
+                                    @if (Model.IsBestSeller)
+                                    {
+                                        <span class="badge badge-warning ml-1">Bán chạy</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Thông số kỹ thuật -->
+                            <h5 class="border-bottom pb-2 mt-4">Thông số kỹ thuật</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-3 mb-2">
+                                    <small class="text-muted d-block">Tên</small>
+                                    <b>@Html.DisplayFor(model => model.Title)</b>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <small class="text-muted d-block">Khối lượng</small>
+                                    <b>@Html.DisplayFor(model => model.Weight) KG</b>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <small class="text-muted d-block">Số đo</small>
+                                    <b>@Html.DisplayFor(model => model.Dimensions)</b>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <small class="text-muted d-block">Số lượt xem</small>
+                                    <b>@Html.DisplayFor(model => model.Views)</b>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <small class="text-muted d-block">Số đã bán</small>
+                                    <b>@Html.DisplayFor(model => model.SoldCount)</b>
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <small class="text-muted d-block">Đánh giá</small>
+                                    <span class="text-warning"><i class="fa fa-star"></i> @Model.Star</span>
+                                </div>
+                            </div>
+
+                            <!-- Kho và Giá -->
+                            <h5 class="border-bottom pb-2 mt-4">Kho & Giá cả</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <strong>Tổng số lượng:</strong> @Model.Quantity
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Tồn kho:</strong> @Model.UnitInStock
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Giá Khuyến mãi:</strong>
+                                    <span class="text-danger font-weight-bold">@string.Format("{0:n0}", Model.PriceSale) VNĐ</span>
+                                </div>
+                            </div>
+
+
+                            <!-- Mô tả -->
+                            <h5 class="border-bottom pb-2 mt-4">Mô tả</h5>
+                            <p><i>@Html.DisplayFor(model => model.Description)</i></p>
+
+                            <div class="p-3 bg-light rounded border">
+                                <strong>Chi tiết:</strong><br />
+                                @Html.Raw(Model.Detail)
+                            </div>
                         </div>
                     </div>
 
-                </div>
+                    <!-- Meta data footer -->
+                    <div class="row mt-4 pt-3 border-top text-muted small">
+                        <div class="col-md-3">
+                            <i class="fa fa-user"></i> Tạo bởi: @Html.DisplayFor(model => model.CreatedBy)
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fa fa-calendar"></i> Ngày tạo: @Html.DisplayFor(model => model.CreatedDate)
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fa fa-pencil"></i> Sửa bởi: @Html.DisplayFor(model => model.ModifiedBy)
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fa fa-clock-o"></i> Ngày sửa: @Html.DisplayFor(model => model.ModifiedDate)
+                        </div>
+                    </div>
 
-                <!-- Nút hành động -->
-                <div class="tile-footer text-center mt-3">
-                    <form asp-action="Delete">
-                        <input type="hidden" asp-for="ProductId" />
-
-                        <button type="submit" class="btn btn-danger btn-lg px-4">
-                            <i class="fa fa-trash"></i> Xóa vĩnh viễn
-                        </button>
-
-                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4 ml-2">
-                            <i class="fa fa-times"></i> Hủy bỏ
-                        </a>
-                    </form>
                 </div>
             </div>
         </div>
