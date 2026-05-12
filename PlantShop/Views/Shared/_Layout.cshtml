@@ -193,12 +193,20 @@
 
                     <!-- Search Form -->
                     <div class="search-form">
-                        <form action="#" method="get">
-                            <input type="search" name="search" id="search" placeholder="Type keywords &amp; press enter...">
+
+                        @using (Html.BeginForm("Index", "Shop", FormMethod.Get))
+                        {
+                            <input type="search"
+                                   name="keyword"
+                                   placeholder="Type keywords & press enter..." />
+
                             <button type="submit" class="d-none"></button>
-                        </form>
-                        <!-- Close Icon -->
-                        <div class="closeIcon"><i class="fa fa-times" aria-hidden="true"></i></div>
+                        }
+
+                        <div class="closeIcon">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </div>
+
                     </div>
                 </div>
             </div>

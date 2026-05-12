@@ -11,11 +11,61 @@ namespace PlantShop.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public ActionResult Index(
+    string keyword,
+    int? sort,
+    int? price)
         {
-            var products = _context.TbProducts.ToList();
-            return View(products);
+            var products = _context.TbProducts.AsQueryable();
 
+            // SEARCH
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                products = products.Where(p =>
+                    p.Title.Contains(keyword));
+            }
+
+            // PRICE FILTER
+            switch (price)
+            {
+                case 1:
+                    products = products.Where(p =>
+                        p.Price < 100000);
+                    break;
+
+                case 2:
+                    products = products.Where(p =>
+                        p.Price >= 100000 &&
+                        p.Price <= 300000);
+                    break;
+
+                case 3:
+                    products = products.Where(p =>
+                        p.Price > 300000);
+                    break;
+            }
+
+            // SORT
+            switch (sort)
+            {
+                case 1:
+                    products = products.OrderByDescending(p => p.ProductId);
+                    break;
+
+                case 2:
+                    products = products.OrderBy(p => p.Price);
+                    break;
+
+                case 3:
+                    products = products.OrderByDescending(p => p.Price);
+                    break;
+            }
+
+            ViewBag.Keyword = keyword;
+            ViewBag.Sort = sort;
+            ViewBag.Price = price;
+
+            return View(products.ToList());
         }
 
 

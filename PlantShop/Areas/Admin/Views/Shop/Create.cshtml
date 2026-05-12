@@ -1,5 +1,4 @@
 ﻿@model PlantShop.Models.TbProduct
-
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -37,33 +36,33 @@
                     <form asp-action="Create" class="row">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group col-md-3">
-                            <label asp-for="Title" class="control-label">Tên xe</label>
+                            <label asp-for="Title" class="control-label">Tên cây</label>
                             <input asp-for="Title" class="form-control" />
                             <span asp-validation-for="Title" class="text-danger"></span>
                         </div><div class="form-group col-md-3">
-                            <label asp-for="Sku" class="control-label">Thương hiệu</label>
+                            <label asp-for="Sku" class="control-label">Mã loại cây</label>
                             <input asp-for="Sku" class="form-control" />
                             <span asp-validation-for="Sku" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label asp-for="CategoryProductId" class="control-label">Loại xe</label>
-                            <select asp-for="CategoryProductId" class="form-control" asp-items="ViewBag.CarCategoryId">
-                                <option value="">-- Chọn loại xe --</option>
+                            <label asp-for="CategoryProductId" class="control-label">Loại cây</label>
+                            <select asp-for="CategoryProductId" class="form-control" asp-items="ViewBag.CategoryProductId">
+                                <option value="">-- Chọn loại cây --</option>
                             </select>
                             <span asp-validation-for="CategoryProductId" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label asp-for="Tags" class="control-label">Biển số xe</label>
+                            <label asp-for="Tags" class="control-label">Tags</label>
                             <input asp-for="Tags" class="form-control" />
                             <span asp-validation-for="Tags" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label asp-for="Quantity" class="control-label">Số lượng xe</label>
+                            <label asp-for="Quantity" class="control-label">Số lượng cây</label>
                             <input asp-for="Quantity" class="form-control" type="number" />
                             <span asp-validation-for="Quantity" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label asp-for="Price" class="control-label">Giá thuê</label>
+                            <label asp-for="Price" class="control-label">Giá bán</label>
                             <input asp-for="Price" class="form-control" type="number" />
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
@@ -76,8 +75,8 @@
                             <label for="TinhTrangSelect" class="control-label">Trạng thái</label>
                             <select class="form-control" id="TinhTrangSelect" asp-for="IsActive">
                                 <option value="">-- Chọn trạng thái --</option>
-                                <option value="true">Còn xe / Hiển thị</option>
-                                <option value="false">Hết xe / Ẩn</option>
+                                <option value="true">Còn / Hiển thị</option>
+                                <option value="false">Hết / Ẩn</option>
                             </select>
                         </div>
                         <div class="form-group col-md-12">

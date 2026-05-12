@@ -36,10 +36,10 @@
                         <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>Thông tin xe</th>
+                                <th>Thông tin </th>
                                 <th>Ảnh</th>
                                 <th>Phân loại</th>
-                                <th>Giá thuê & Số lượng</th>
+                                <th>Giá bán & Số lượng</th>
                                 <th>Trạng thái</th>
                                 <th>Chức năng</th>
                             </tr>
@@ -71,7 +71,7 @@
                                     <td>
                                         <span class="badge badge-info" style="font-size: 0.9em;">@Html.DisplayFor(modelItem => item.CategoryProduct.Title)</span>
                                         <br>
-                                        <span class="small" style="font-size: 0.9em;">Hãng: @Html.DisplayFor(modelItem => item.Detail)</span>
+                                        <span class="small" style="font-size: 0.9em;">Chi tiết: @Html.DisplayFor(modelItem => item.Detail)</span>
                                     </td>
                                     <td>
                                         <span class="font-weight-bold text-danger" style="font-size: 1em;">@string.Format("{0:n0}", item.Price) VND</span>

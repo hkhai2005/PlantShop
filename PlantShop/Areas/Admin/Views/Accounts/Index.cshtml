@@ -64,7 +64,7 @@
                                     <td>@(i++)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Username)</td>
                                     <td>@Html.DisplayFor(modelItem => item.FullName)</td>
-                                    @* <td>
+                                    <td>
                                         <!-- Hiển thị ảnh: Giả sử ảnh lưu trong thư mục /images/ -->
                                         <!-- Nếu item.Image là đường dẫn đầy đủ thì bỏ đoạn /images/ đi -->
                                         <img class="img-card-person" src="@item.Image" alt="Avatar">
@@ -72,10 +72,10 @@
                                     <td>@Html.DisplayFor(modelItem => item.Address)</td>
                                     <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Gender)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Phone)</td> *@
+                                    <td>@Html.DisplayFor(modelItem => item.Phone)</td>
                                     <td>
                                         <!-- Hiển thị tên Role thay vì ID nếu có thể -->
-                                        @Html.DisplayFor(modelItem => item.Role.RoleName)
+                                        @Html.DisplayFor(modelItem => item.RoleId)
                                     </td>
                                     <td>
                                         @if (item.IsActive == true)
