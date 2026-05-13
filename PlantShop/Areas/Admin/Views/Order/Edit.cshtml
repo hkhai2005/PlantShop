@@ -1,0 +1,101 @@
+﻿@model PlantShop.Models.TbOrder
+@{
+    ViewData["Title"] = "Cập nhật đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản lý đơn hàng</li>
+            <li class="breadcrumb-item"><a href="#">Cập nhật</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">
+                    Cập nhật trạng thái đơn hàng #@(Model.Code ?? "DH" + Model.OrderId)
+                </h3>
+                <div class="tile-body">
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                    <form asp-action="Edit" method="post" class="row">
+                        <input type="hidden" asp-for="OrderId" />
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="OrderStatusId" class="control-label">Trạng thái đơn hàng</label>
+                            <select asp-for="OrderStatusId" class="form-control" asp-items="ViewBag.OrderStatusList" id="orderStatusSelect">
+                                <option value="">-- Chọn trạng thái --</option>
+                            </select>
+                            <span asp-validation-for="OrderStatusId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-12" id="cancelReasonDiv" style="display:none;">
+                            <label asp-for="CancelReason" class="control-label">Lý do hủy đơn <span class="text-danger">*</span></label>
+                            <textarea asp-for="CancelReason" class="form-control" rows="3" placeholder="Vui lòng nhập lý do hủy đơn hàng..."></textarea>
+                            <span asp-validation-for="CancelReason" class="text-danger"></span>
+                            <small class="text-muted">Lý do hủy sẽ được gửi đến khách hàng qua email/SMS</small>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label asp-for="Note" class="control-label">Ghi chú nội bộ</label>
+                            <textarea asp-for="Note" class="form-control" rows="2" placeholder="Ghi chú thêm về đơn hàng..."></textarea>
+                            <span asp-validation-for="Note" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-12 mt-3">
+                            <hr />
+                            <h5>Thông tin đơn hàng</h5>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th width="150">Mã đơn hàng:</th>
+                                    <td>@(Model.Code ?? "DH" + Model.OrderId)</td>
+                                </tr>
+                                <tr>
+                                    <th>Khách hàng:</th>
+                                    <td>@Model.CustomerName - @Model.Phone</td>
+                                </tr>
+                                <tr>
+                                    <th>Tổng tiền:</th>
+                                    <td class="fw-bold text-danger">@(Model.TotalAmount?.ToString("N0"))đ</td>
+                                </tr>
+                                <tr>
+                                    <th>Ngày đặt:</th>
+                                    <td>@(Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm"))</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <button class="btn btn-save" type="submit"><i class="fa fa-save"></i> Cập nhật</button>
+                            <a asp-action="Index" class="btn btn-cancel"><i class="fa fa-times"></i> Hủy bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            function checkCancelStatus() {
+                var selectedText = $('#orderStatusSelect option:selected').text();
+                if (selectedText.includes('Hủy') || selectedText.includes('Cancel')) {
+                    $('#cancelReasonDiv').show();
+                } else {
+                    $('#cancelReasonDiv').hide();
+                }
+            }
+
+            $('#orderStatusSelect').change(function() {
+                checkCancelStatus();
+            });
+
+            checkCancelStatus();
+        });
+    </script>
+}

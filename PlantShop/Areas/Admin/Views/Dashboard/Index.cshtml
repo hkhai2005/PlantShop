@@ -1,0 +1,439 @@
+﻿@model PlantShop.Areas.Admin.Controllers.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard - Thống kê";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Thư viện CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+<!-- Thư viện JS -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<main class="app-content">
+    <!-- Breadcrumb -->
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="#"><b>Dashboard / Thống kê</b></a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+
+    <!-- ========== 4 CARD TỔNG QUAN ========== -->
+    <div class="row">
+        <div class="col-md-3 col-lg-3">
+            <div class="widget-small primary coloured-icon">
+                <i class="icon fa fa-shopping-cart fa-3x"></i>
+                <div class="info">
+                    <h4>Tổng đơn hàng</h4>
+                    <p><b>@Model.TotalOrders</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-3">
+            <div class="widget-small info coloured-icon">
+                <i class="icon fa fa-money fa-3x"></i>
+                <div class="info">
+                    <h4>Doanh thu</h4>
+                    <p><b>@Model.TotalRevenue.ToString("N0")đ</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-3">
+            <div class="widget-small warning coloured-icon">
+                <i class="icon fa fa-users fa-3x"></i>
+                <div class="info">
+                    <h4>Khách hàng</h4>
+                    <p><b>@Model.TotalCustomers</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-3">
+            <div class="widget-small danger coloured-icon">
+                <i class="icon fa fa-leaf fa-3x"></i>
+                <div class="info">
+                    <h4>Sản phẩm</h4>
+                    <p><b>@Model.TotalProducts</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== BIỂU ĐỒ DOANH THU ========== -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">📊 Doanh thu theo thời gian</h3>
+                <div class="tile-body">
+                    <ul class="nav nav-tabs" id="revenueTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="week-tab" data-toggle="tab" href="#week" role="tab">Theo tuần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="day-tab" data-toggle="tab" href="#day" role="tab">Theo ngày (7 ngày)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="month-tab" data-toggle="tab" href="#month" role="tab">Theo tháng</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane fade show active" id="week" role="tabpanel">
+                            <canvas id="revenueWeekChart" style="height: 300px; width: 100%;"></canvas>
+                        </div>
+                        <div class="tab-pane fade" id="day" role="tabpanel">
+                            <canvas id="revenueDayChart" style="height: 300px; width: 100%;"></canvas>
+                        </div>
+                        <div class="tab-pane fade" id="month" role="tabpanel">
+                            <canvas id="revenueMonthChart" style="height: 300px; width: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== TRẠNG THÁI ĐƠN + TOP SẢN PHẨM ========== -->
+    <div class="row">
+        <div class="col-md-5">
+            <div class="tile">
+                <h3 class="tile-title">🍩 Trạng thái đơn hàng</h3>
+                <div class="tile-body">
+                    <canvas id="orderStatusChart" style="height: 300px; width: 100%;"></canvas>
+                    <div class="mt-3">
+                        @foreach (var status in Model.OrderStatusStats)
+                        {
+                            <div class="d-flex justify-content-between">
+                                <span>@status.StatusName</span>
+                                <span class="fw-bold">@status.Count đơn</span>
+                            </div>
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-success" style="width: @(Model.TotalOrders > 0 ? (status.Count * 100 / Model.TotalOrders) : 0)%">
+                                    @(Model.TotalOrders > 0 ? (status.Count * 100 / Model.TotalOrders) : 0)%
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="tile">
+                <h3 class="tile-title">🏆 Top 10 sản phẩm bán chạy</h3>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr><th>#</th><th>Hình ảnh</th><th>Tên sản phẩm</th><th class="text-end">Đã bán</th><th class="text-end">Doanh thu</th></tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int rank = 1;
+                                }
+                                @foreach (var product in Model.TopProducts)
+                                {
+                                    <tr>
+                                        <td class="text-center fw-bold">@(rank++)</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(product.Image))
+                                            {
+                                                <img src="@product.Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" />
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-image fa-2x text-secondary"></i>
+                                            }
+                                        </td>
+                                        <td>@product.ProductName</td>
+                                        <td class="text-end fw-bold text-danger">@product.TotalQuantity</td>
+                                        <td class="text-end">@product.TotalRevenue.ToString("N0")đ</td>
+                                    </tr>
+                                }
+                                @if (!Model.TopProducts.Any())
+                                {
+                                    <tr><td colspan="5" class="text-center">Chưa có dữ liệu</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== TOP KHÁCH HÀNG ========== -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">👥 Top 10 khách hàng thân thiết</h3>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr><th>#</th><th>Tên khách hàng</th><th>Số điện thoại</th><th class="text-end">Số đơn</th><th class="text-end">Tổng chi tiêu</th></tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int customerRank = 1;
+                                }
+                                @foreach (var customer in Model.TopCustomers)
+                                {
+                                    <tr>
+                                        <td class="text-center fw-bold">@(customerRank++)</td>
+                                        <td>@customer.CustomerName</td>
+                                        <td>@customer.Phone</td>
+                                        <td class="text-end">@customer.TotalOrders</td>
+                                        <td class="text-end fw-bold text-success">@customer.TotalSpent.ToString("N0")đ</td>
+                                    </tr>
+                                }
+                                @if (!Model.TopCustomers.Any())
+                                {
+                                    <tr><td colspan="5" class="text-center">Chưa có dữ liệu</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script>
+        // Hàm khởi tạo biểu đồ với delay để đảm bảo canvas đã sẵn sàng
+        function initCharts() {
+            console.log("🚀 Bắt đầu khởi tạo biểu đồ...");
+
+            // Lấy dữ liệu từ Model
+            var revenueByWeek = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueByWeek));
+            var revenueByDay = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueByDay));
+            var revenueByMonth = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueByMonth));
+            var orderStatusStats = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.OrderStatusStats));
+
+            // Debug: Kiểm tra dữ liệu
+            console.log("📊 RevenueByWeek:", revenueByWeek);
+            console.log("📊 RevenueByDay:", revenueByDay);
+            console.log("📊 RevenueByMonth:", revenueByMonth);
+            console.log("📊 OrderStatusStats:", orderStatusStats);
+
+            // ========== 1. BIỂU ĐỒ DOANH THU THEO TUẦN ==========
+            var weekCanvas = document.getElementById('revenueWeekChart');
+            if (weekCanvas && revenueByWeek && revenueByWeek.length > 0) {
+                var weekCtx = weekCanvas.getContext('2d');
+                new Chart(weekCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: revenueByWeek.map(x => x.weekName || 'Tuần ' + (revenueByWeek.indexOf(x) + 1)),
+                        datasets: [{
+                            label: 'Doanh thu (VNĐ)',
+                            data: revenueByWeek.map(x => x.revenue || 0),
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return new Intl.NumberFormat('vi-VN').format(context.raw) + ' đ';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    callback: function(value) {
+                                        return new Intl.NumberFormat('vi-VN').format(value) + ' đ';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log("✅ Đã tạo biểu đồ doanh thu tuần");
+            } else {
+                console.warn("⚠️ Không tìm thấy canvas revenueWeekChart hoặc dữ liệu rỗng");
+            }
+
+            // ========== 2. BIỂU ĐỒ DOANH THU THEO NGÀY ==========
+            var dayCanvas = document.getElementById('revenueDayChart');
+            if (dayCanvas && revenueByDay && revenueByDay.length > 0) {
+                var dayCtx = dayCanvas.getContext('2d');
+                new Chart(dayCtx, {
+                    type: 'line',
+                    data: {
+                        labels: revenueByDay.map(x => x.date || 'Ngày ' + (revenueByDay.indexOf(x) + 1)),
+                        datasets: [{
+                            label: 'Doanh thu (VNĐ)',
+                            data: revenueByDay.map(x => x.revenue || 0),
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return new Intl.NumberFormat('vi-VN').format(context.raw) + ' đ';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    callback: function(value) {
+                                        return new Intl.NumberFormat('vi-VN').format(value) + ' đ';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log("✅ Đã tạo biểu đồ doanh thu ngày");
+            } else {
+                console.warn("⚠️ Không tìm thấy canvas revenueDayChart hoặc dữ liệu rỗng");
+            }
+
+            // ========== 3. BIỂU ĐỒ DOANH THU THEO THÁNG ==========
+            var monthCanvas = document.getElementById('revenueMonthChart');
+            if (monthCanvas && revenueByMonth && revenueByMonth.length > 0) {
+                var monthCtx = monthCanvas.getContext('2d');
+                new Chart(monthCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: revenueByMonth.map(x => x.month || 'Tháng ' + (revenueByMonth.indexOf(x) + 1)),
+                        datasets: [{
+                            label: 'Doanh thu (VNĐ)',
+                            data: revenueByMonth.map(x => x.revenue || 0),
+                            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return new Intl.NumberFormat('vi-VN').format(context.raw) + ' đ';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    callback: function(value) {
+                                        return new Intl.NumberFormat('vi-VN').format(value) + ' đ';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log("✅ Đã tạo biểu đồ doanh thu tháng");
+            } else {
+                console.warn("⚠️ Không tìm thấy canvas revenueMonthChart hoặc dữ liệu rỗng");
+            }
+
+            // ========== 4. BIỂU ĐỒ TRÒN TRẠNG THÁI ĐƠN HÀNG ==========
+            var statusCanvas = document.getElementById('orderStatusChart');
+            if (statusCanvas && orderStatusStats && orderStatusStats.length > 0) {
+                var statusCtx = statusCanvas.getContext('2d');
+                var totalOrders = orderStatusStats.reduce((sum, s) => sum + (s.count || 0), 0);
+                new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: orderStatusStats.map(x => x.statusName || 'Không xác định'),
+                        datasets: [{
+                            data: orderStatusStats.map(x => x.count || 0),
+                            backgroundColor: ['#28a745', '#ffc107', '#17a2b8', '#dc3545', '#6c757d', '#007bff', '#6610f2'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        var percentage = totalOrders > 0 ? ((context.raw / totalOrders) * 100).toFixed(1) : 0;
+                                        return context.label + ': ' + context.raw + ' đơn (' + percentage + '%)';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log("✅ Đã tạo biểu đồ trạng thái đơn hàng");
+            } else {
+                console.warn("⚠️ Không tìm thấy canvas orderStatusChart hoặc dữ liệu rỗng");
+                // Hiển thị thông báo nếu không có dữ liệu
+                if (statusCanvas) {
+                    statusCanvas.style.display = 'none';
+                    $('#orderStatusChart').after('<div class="alert alert-warning">Chưa có dữ liệu đơn hàng để hiển thị biểu đồ</div>');
+                }
+            }
+        }
+
+        // Khởi tạo biểu đồ khi trang đã load xong
+        $(document).ready(function() {
+            // Delay nhỏ để đảm bảo canvas đã được render
+            setTimeout(initCharts, 100);
+        });
+
+        // Xử lý khi chuyển tab - vẽ lại biểu đồ (fix lỗi canvas bị mất khi tab ẩn)
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var targetId = $(e.target).attr('href');
+            console.log("🔄 Chuyển tab: " + targetId);
+            
+            // Delay nhỏ để canvas hiển thị rồi mới vẽ lại
+            setTimeout(function() {
+                if (targetId === '#week') {
+                    var canvas = document.getElementById('revenueWeekChart');
+                    if (canvas && canvas.chart) {
+                        canvas.chart.update();
+                    } else {
+                        initCharts();
+                    }
+                } else if (targetId === '#day') {
+                    var canvas = document.getElementById('revenueDayChart');
+                    if (canvas && canvas.chart) {
+                        canvas.chart.update();
+                    } else {
+                        initCharts();
+                    }
+                } else if (targetId === '#month') {
+                    var canvas = document.getElementById('revenueMonthChart');
+                    if (canvas && canvas.chart) {
+                        canvas.chart.update();
+                    } else {
+                        initCharts();
+                    }
+                }
+            }, 50);
+        });
+    </script>
+}

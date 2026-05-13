@@ -48,8 +48,7 @@
                                 <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
                                 <th>Trạng thái</th>
-                                <th>Xác thực</th>
-                                <th width="120">Chức năng</th>
+                                <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,16 +84,7 @@
                                             <span class="badge bg-danger">Khóa</span>
                                         }
                                     </td>
-                                    <td>
-                                        @* @if (item.VerifyEmail)
-                                        {
-                                            <span class="badge bg-info"><i class="fa fa-envelope"></i> Email</span>
-                                        }
-                                        @if (item.VerifyPhone)
-                                        {
-                                            <span class="badge bg-warning"><i class="fa fa-phone"></i> SĐT</span>
-                                        } *@
-                                    </td>
+                                  
                                     <td class="table-td-center">
                                         <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-primary btn-sm" title="Chi tiết">
                                             <i class="fas fa-eye"></i>

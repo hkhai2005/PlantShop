@@ -22,7 +22,7 @@ namespace PlantShop.Areas.Admin.Controllers
         // GET: Admin/Customer
         public async Task<IActionResult> Index()
         {
-            var customers = await _context.TbCustomers.OrderByDescending(c => c.CustomerId).ToListAsync();
+            var customers = await _context.TbCustomers.OrderBy(c => c.CustomerId).ToListAsync();
             return View(customers);
         }
 

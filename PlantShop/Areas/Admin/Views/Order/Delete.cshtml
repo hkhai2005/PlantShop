@@ -1,0 +1,74 @@
+﻿@model PlantShop.Models.TbOrder
+@{
+    ViewData["Title"] = "Xóa đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản lý đơn hàng</li>
+            <li class="breadcrumb-item"><a href="#">Xóa đơn hàng</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Xác nhận xóa đơn hàng</h3>
+                <div class="tile-body">
+
+                    <div class="alert alert-danger text-center">
+                        <i class="fa fa-exclamation-triangle fa-2x mb-2"></i><br />
+                        <strong>CẢNH BÁO:</strong> Bạn đang thực hiện xóa đơn hàng <strong>#@(Model.Code ?? "DH" + Model.OrderId)</strong>
+                        <br />Hành động này sẽ xóa <strong>VĨNH VIỄN</strong> đơn hàng và toàn bộ chi tiết đơn hàng!
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Thông tin đơn hàng</h5>
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <th>Mã đơn:</th>
+                                            <td>@(Model.Code ?? "DH" + Model.OrderId)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Khách hàng:</th>
+                                            <td>@Model.CustomerName - @Model.Phone</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Tổng tiền:</th>
+                                            <td>@(Model.TotalAmount?.ToString("N0"))đ</td>
+                                         </tr>
+                                        <tr>
+                                            <th>Trạng thái:</th>
+                                            <td>@(Model.OrderStatus?.Name ?? "Chưa xác định")</td>
+                                         </tr>
+                                        <tr>
+                                            <th>Ngày đặt:</th>
+                                            <td>@(Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm"))</td>
+                                         </tr>
+                                     </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tile-footer text-center mt-3">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="OrderId" />
+                        <button type="submit" class="btn btn-danger btn-lg px-4" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này? Hành động không thể hoàn tác!')">
+                            <i class="fa fa-trash"></i> Xóa vĩnh viễn
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4 ml-2">
+                            <i class="fa fa-times"></i> Hủy bỏ
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

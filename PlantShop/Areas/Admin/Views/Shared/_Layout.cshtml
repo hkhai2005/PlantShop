@@ -45,7 +45,7 @@
 
             <!-- User Menu-->
             <li>
-                <a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+                <a class="app-nav__item" href="Admin/Login"><i class='bx bx-log-out bx-rotate-180'></i> </a>
 
             </li>
         </ul>
@@ -63,12 +63,12 @@
         </div>
         <hr>
         <ul class="app-menu">
-            <li>
+            @* <li>
                 <a class="app-menu__item haha" href="phan-mem-ban-hang.html">
                     <i class='app-menu__icon bx bx-cart-alt'></i>
                     <span class="app-menu__label">POS Bán Hàng</span>
                 </a>
-            </li>
+            </li> *@
             <li>
                 <a class="app-menu__item @(currentController == "Home" ? "active" : "")"
                    asp-area="Admin"
@@ -110,11 +110,14 @@
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" href="table-data-oder.html">
+                <a class="app-menu__item @(currentController == "Order" ? "active" : "")"
+                   asp-area="Admin"
+                   asp-controller="Order"
+                   asp-action="Index">
                     <i class='app-menu__icon bx bx-task'></i><span class="app-menu__label">Quản lý đơn hàng</span>
                 </a>
             </li>
-            <li>
+            @* <li>
                 <a class="app-menu__item" href="table-data-banned.html">
                     <i class='app-menu__icon bx bx-run'></i><span class="app-menu__label">
                         Quản lý nội bộ
@@ -125,13 +128,16 @@
                 <a class="app-menu__item" href="table-data-money.html">
                     <i class='app-menu__icon bx bx-dollar'></i><span class="app-menu__label">Bảng kê lương</span>
                 </a>
-            </li>
+            </li> *@
             <li>
-                <a class="app-menu__item" href="quan-ly-bao-cao.html">
+                <a class="app-menu__item @(currentController == "Dashboard" ? "active" : "")"
+                   asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Index">
                     <i class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span>
                 </a>
             </li>
-            <li>
+            @* <li>
                 <a class="app-menu__item" href="page-calendar.html">
                     <i class='app-menu__icon bx bx-calendar-check'></i><span class="app-menu__label">Lịch công tác </span>
                 </a>
@@ -143,7 +149,7 @@
                         đặt hệ thống
                     </span>
                 </a>
-            </li>
+            </li> *@
         </ul>
     </aside>
         @RenderBody()

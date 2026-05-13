@@ -1,0 +1,203 @@
+﻿@model PlantShop.Models.TbOrder
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản lý đơn hàng</li>
+            <li class="breadcrumb-item"><a href="#">Chi tiết đơn hàng</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title-w-btn">
+                    <h3 class="title">Chi tiết đơn hàng #@(Model.Code ?? "DH" + Model.OrderId)</h3>
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@Model.OrderId" class="btn btn-primary">
+                            <i class="fa fa-edit"></i> Cập nhật trạng thái
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tile-body">
+                    <div class="row">
+                        <!-- Cột trái: Thông tin đơn hàng -->
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="fa fa-info-circle"></i> Thông tin đơn hàng
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <th width="150">Mã đơn hàng:</th>
+                                            <td>@(Model.Code ?? "DH" + Model.OrderId)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Ngày đặt hàng:</th>
+                                            <td>@(Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm") ?? "--")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Trạng thái đơn:</th>
+                                            <td>
+                                                @if (Model.OrderStatus != null)
+                                                {
+                                                    string badgeClass = Model.OrderStatus.Name switch
+                                                    {
+                                                        "Chờ xác nhận" or "Pending" => "bg-warning",
+                                                        "Đang giao" or "Shipping" => "bg-info",
+                                                        "Hoàn thành" or "Completed" => "bg-success",
+                                                        "Đã hủy" or "Cancelled" => "bg-danger",
+                                                        _ => "bg-secondary"
+                                                    };
+                                                    <span class="badge @badgeClass" style="font-size:14px;">@Model.OrderStatus.Name</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phương thức TT:</th>
+                                            <td>@(string.IsNullOrEmpty(Model.PaymentMethod) ? "Chưa xác định" : Model.PaymentMethod)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Trạng thái TT:</th>
+                                            <td>
+                                                <span class="badge @(Model.PaymentStatus == "Paid" ? "bg-success" : "bg-warning")">
+                                                    @Model.PaymentStatus
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @if (!string.IsNullOrEmpty(Model.Note))
+                                        {
+                                            <tr>
+                                                <th>Ghi chú:</th>
+                                                <td>@Model.Note</td>
+                                            </tr>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.CancelReason))
+                                        {
+                                            <tr>
+                                                <th>Lý do hủy:</th>
+                                                <td class="text-danger">@Model.CancelReason</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cột phải: Thông tin khách hàng -->
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-success text-white">
+                                    <i class="fa fa-user"></i> Thông tin khách hàng
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <th width="150">Tên khách hàng:</th>
+                                            <td><strong>@Model.CustomerName</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Số điện thoại:</th>
+                                            <td><a href="tel:@Model.Phone">@Model.Phone</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Địa chỉ giao hàng:</th>
+                                            <td>@Model.Address</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bảng sản phẩm trong đơn hàng -->
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">
+                                    <i class="fa fa-shopping-cart"></i> Danh sách sản phẩm
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th>#</th>
+                                                    <th>Hình ảnh</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Đơn giá</th>
+                                                    <th>Số lượng</th>
+                                                    <th class="text-end">Thành tiền</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @* @{
+                                                    int idx = 1;
+                                                    decimal? totalProductAmount = 0;
+                                                }
+                                                @foreach (var item in Model.OrderDetails)
+                                                {
+                                                    totalProductAmount += item.SubTotal;
+                                                    <tr>
+                                                        <td class="text-center">@(idx++)</td>
+                                                        <td class="text-center">
+                                                            @if (!string.IsNullOrEmpty(item.Product?.Image))
+                                                            {
+                                                                <img src="@item.Product.Image" alt="@item.Product?.Title" style="width: 60px; height: 60px; object-fit: cover;" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-image fa-2x text-secondary"></i>
+                                                            }
+                                                        </td>
+                                                        <td>@(item.Product?.Title ?? "Sản phẩm #" + item.ProductId)</td>
+                                                        <td class="text-end">@(item.Price?.ToString("N0"))đ</td>
+                                                        <td class="text-center">@item.Quantity</td>
+                                                        <td class="text-end fw-bold">@(item.SubTotal?.ToString("N0"))đ</td>
+                                                    </tr>
+                                                } *@
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    @* <td colspan="5" class="text-end fw-bold">Tổng tiền hàng:</td>
+                                                    <td class="text-end fw-bold">@(totalProductAmount?.ToString("N0"))đ</td> *@
+                                                </tr>
+                                                @if (Model.DiscountAmount > 0)
+                                                {
+                                                    <tr>
+                                                        <td colspan="5" class="text-end text-danger">Giảm giá:</td>
+                                                        <td class="text-end text-danger">- @(Model.DiscountAmount?.ToString("N0"))đ</td>
+                                                    </tr>
+                                                }
+                                                @if (Model.ShippingFee > 0)
+                                                {
+                                                    <tr>
+                                                        <td colspan="5" class="text-end">Phí vận chuyển:</td>
+                                                        <td class="text-end">@(Model.ShippingFee?.ToString("N0"))đ</td>
+                                                    </tr>
+                                                }
+                                                @* <tr class="table-success">
+                                                    <td colspan="5" class="text-end fw-bold fs-5">Tổng thanh toán:</td>
+                                                    <td class="text-end fw-bold fs-5 text-danger">@(Model.FinalAmount?.ToString("N0"))đ</td>
+                                                </tr> *@
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

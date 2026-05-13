@@ -1,202 +1,236 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang chủ - Cửa hàng cây cảnh";
 }
+
 <main class="app-content">
     <div class="row">
         <div class="col-md-12">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="#"><b>Bảng điều khiển</b></a></li>
+                    <li class="breadcrumb-item"><a href="#"><b>Trang chủ</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
         </div>
     </div>
+
+    <!-- ========== BANNER GIỚI THIỆU ========== -->
     <div class="row">
-        <!--Left-->
-        <div class="col-md-12 col-lg-6">
-            <div class="row">
-                <!-- col-6 -->
-                <div class="col-md-6">
-                    <div class="widget-small primary coloured-icon">
-                        <i class='icon bx bxs-user-account fa-3x'></i>
-                        <div class="info">
-                            <h4>Tổng khách hàng</h4>
-                            <p><b>56 khách hàng</b></p>
-                            <p class="info-tong">Tổng số khách hàng được quản lý.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- col-6 -->
-                <div class="col-md-6">
-                    <div class="widget-small info coloured-icon">
-                        <i class='icon bx bxs-data fa-3x'></i>
-                        <div class="info">
-                            <h4>Tổng sản phẩm</h4>
-                            <p><b>1850 sản phẩm</b></p>
-                            <p class="info-tong">Tổng số sản phẩm được quản lý.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- col-6 -->
-                <div class="col-md-6">
-                    <div class="widget-small warning coloured-icon">
-                        <i class='icon bx bxs-shopping-bags fa-3x'></i>
-                        <div class="info">
-                            <h4>Tổng đơn hàng</h4>
-                            <p><b>247 đơn hàng</b></p>
-                            <p class="info-tong">Tổng số hóa đơn bán hàng trong tháng.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- col-6 -->
-                <div class="col-md-6">
-                    <div class="widget-small danger coloured-icon">
-                        <i class='icon bx bxs-error-alt fa-3x'></i>
-                        <div class="info">
-                            <h4>Sắp hết hàng</h4>
-                            <p><b>4 sản phẩm</b></p>
-                            <p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- col-12 -->
-                <div class="col-md-12">
-                    <div class="tile">
-                        <h3 class="tile-title">Tình trạng đơn hàng</h3>
-                        <div>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>ID đơn hàng</th>
-                                        <th>Tên khách hàng</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>AL3947</td>
-                                        <td>Phạm Thị Ngọc</td>
-                                        <td>
-                                            19.770.000 đ
-                                        </td>
-                                        <td><span class="badge bg-info">Chờ xử lý</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ER3835</td>
-                                        <td>Nguyễn Thị Mỹ Yến</td>
-                                        <td>
-                                            16.770.000 đ
-                                        </td>
-                                        <td><span class="badge bg-warning">Đang vận chuyển</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>MD0837</td>
-                                        <td>Triệu Thanh Phú</td>
-                                        <td>
-                                            9.400.000 đ
-                                        </td>
-                                        <td><span class="badge bg-success">Đã hoàn thành</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>MT9835</td>
-                                        <td>Đặng Hoàng Phúc	</td>
-                                        <td>
-                                            40.650.000 đ
-                                        </td>
-                                        <td><span class="badge bg-danger">Đã hủy	</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- / div trống-->
-                    </div>
-                </div>
-                <!-- / col-12 -->
-                <!-- col-12 -->
-                <div class="col-md-12">
-                    <div class="tile">
-                        <h3 class="tile-title">Khách hàng mới</h3>
-                        <div>
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên khách hàng</th>
-                                        <th>Ngày sinh</th>
-                                        <th>Số điện thoại</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>#183</td>
-                                        <td>Hột vịt muối</td>
-                                        <td>21/7/1992</td>
-                                        <td><span class="tag tag-success">0921387221</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>#219</td>
-                                        <td>Bánh tráng trộn</td>
-                                        <td>30/4/1975</td>
-                                        <td><span class="tag tag-warning">0912376352</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>#627</td>
-                                        <td>Cút rang bơ</td>
-                                        <td>12/3/1999</td>
-                                        <td><span class="tag tag-primary">01287326654</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>#175</td>
-                                        <td>Hủ tiếu nam vang</td>
-                                        <td>4/12/20000</td>
-                                        <td><span class="tag tag-danger">0912376763</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- / col-12 -->
+        <div class="col-md-12">
+            <div class="tile text-center" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 50px 20px; border-radius: 15px;">
+                <h1 class="mb-3">🌿 Xanh Việt - Cửa hàng cây cảnh uy tín</h1>
+                <p class="lead">Mang thiên nhiên vào không gian sống của bạn</p>
+                <p>Với hơn 5 năm kinh nghiệm, chúng tôi tự hào là địa chỉ tin cậy cung cấp các loại cây cảnh, cây nội thất, cây văn phòng chất lượng cao.</p>
+                <hr style="background: rgba(255,255,255,0.3); width: 50%; margin: 20px auto;">
+                <p>🏆 Cam kết cây khỏe mạnh - Giao hàng nhanh - Tư vấn tận tâm</p>
             </div>
         </div>
-        <!--END left-->
-        <!--Right-->
-        <div class="col-md-12 col-lg-6">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="tile">
-                        <h3 class="tile-title">Dữ liệu 6 tháng đầu vào</h3>
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="tile">
-                        <h3 class="tile-title">Thống kê 6 tháng doanh thu</h3>
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <!--END right-->
     </div>
 
+    <!-- ========== 4 CARD GIỚI THIỆU DỊCH VỤ ========== -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="widget-small primary coloured-icon text-center">
+                <i class='icon bx bxs-leaf fa-3x'></i>
+                <div class="info">
+                    <h4>Cây khỏe - Đẹp</h4>
+                    <p class="mb-0">Cây được chăm sóc kỹ lưỡng, đảm bảo chất lượng tốt nhất khi đến tay khách hàng</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="widget-small info coloured-icon text-center">
+                <i class='icon bx bxs-truck fa-3x'></i>
+                <div class="info">
+                    <h4>Giao hàng nhanh</h4>
+                    <p class="mb-0">Giao hàng nội thành trong 24h, hỗ trợ vận chuyển toàn quốc</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="widget-small warning coloured-icon text-center">
+                <i class='icon bx bxs-chat fa-3x'></i>
+                <div class="info">
+                    <h4>Tư vấn 24/7</h4>
+                    <p class="mb-0">Đội ngũ nhân viên giàu kinh nghiệm luôn sẵn sàng hỗ trợ bạn</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="widget-small danger coloured-icon text-center">
+                <i class='icon bx bxs-shield-alt-2 fa-3x'></i>
+                <div class="info">
+                    <h4>Bảo hành 30 ngày</h4>
+                    <p class="mb-0">Đổi trả miễn phí nếu cây không đạt chất lượng trong 30 ngày</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div class="text-center" style="font-size: 13px">
+    <!-- ========== GIỚI THIỆU SẢN PHẨM NỔI BẬT ========== -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">🌱 Sản phẩm nổi bật</h3>
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <img src="../assets/img/bg-img/41.jpg" style="width: 100%; border-radius: 10px; max-height: 180px; object-fit: cover;">
+                        <h5 class="mt-2">Cây Kim Tiền</h5>
+                        <p>Mang lại tài lộc, may mắn</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <img src="../assets/img/bg-img/42.jpg" style="width: 100%; border-radius: 10px; max-height: 180px; object-fit: cover;">
+                        <h5 class="mt-2">Cây Trầu Bà</h5>
+                        <p>Thanh lọc không khí</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <img src="../assets/img/bg-img/43.jpg" style="width: 100%; border-radius: 10px; max-height: 180px; object-fit: cover;">
+                        <h5 class="mt-2">Cây Lưỡi Hổ</h5>
+                        <p>Chịu bóng, dễ chăm</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <img src="../assets/img/bg-img/44.jpg" style="width: 100%; border-radius: 10px; max-height: 180px; object-fit: cover;">
+                        <h5 class="mt-2">Sen Đá</h5>
+                        <p>Xinh xắn để bàn</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== GIỚI THIỆU VỀ CHÚNG TÔI ========== -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">📖 Về chúng tôi</h3>
+                <p><strong>Xanh Việt</strong> được thành lập với sứ mệnh mang cây xanh đến gần hơn với mọi người.</p>
+                <p>Chúng tôi chuyên cung cấp các loại cây cảnh nội thất, cây văn phòng, cây phong thủy, và các sản phẩm chậu, đất, phân bón chính hãng.</p>
+                <p>✓ Hơn 500+ mẫu cây đa dạng</p>
+                <p>✓ Tư vấn miễn phí vị trí đặt cây theo phong thủy</p>
+                <p>✓ Chính sách bảo hành cây trồng 30 ngày</p>
+                <p>✓ Miễn phí giao hàng nội thành cho đơn từ 500k</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="tile">
+                <h3 class="tile-title">📍 Thông tin liên hệ</h3>
+                <p><i class="fa fa-map-marker"></i> <strong>Địa chỉ:</strong> 123 Đường Láng, Đống Đa, Hà Nội</p>
+                <p><i class="fa fa-phone"></i> <strong>Hotline:</strong> 1900 1234 - 0987 654 321</p>
+                <p><i class="fa fa-envelope"></i> <strong>Email:</strong> cskh@xanhviet.com</p>
+                <p><i class="fa fa-clock-o"></i> <strong>Giờ mở cửa:</strong> 8:00 - 21:00 các ngày trong tuần (kể cả Chủ Nhật)</p>
+                <hr />
+                <p><strong>Kết nối với chúng tôi:</strong></p>
+                <p>
+                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-facebook"></i> Facebook</a>
+                    <a href="#" class="btn btn-info btn-sm"><i class="fa fa-instagram"></i> Instagram</a>
+                    <a href="#" class="btn btn-success btn-sm"><i class="fa fa-zalo"></i> Zalo</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== HƯỚNG DẪN CHĂM SÓC CÂY ========== -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">💡 Hướng dẫn chăm sóc cây cơ bản</h3>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <i class="fa fa-tint fa-3x text-primary"></i>
+                            <h5>Tưới nước</h5>
+                            <p>Tưới 2-3 lần/tuần, tránh tưới quá nhiều gây úng rễ</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <i class="fa fa-sun-o fa-3x text-warning"></i>
+                            <h5>Ánh sáng</h5>
+                            <p>Đặt cây nơi có ánh sáng gián tiếp, tránh nắng gắt</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <i class="fa fa-leaf fa-3x text-success"></i>
+                            <h5>Bón phân</h5>
+                            <p>Bón phân định kỳ 1 tháng/lần vào mùa sinh trưởng</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <i class="fa fa-cut fa-3x text-secondary"></i>
+                            <h5>Cắt tỉa</h5>
+                            <p>Cắt bỏ lá vàng, lá sâu bệnh để cây phát triển tốt</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== CAM KẾT CHẤT LƯỢNG ========== -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile text-center" style="background: #f8f9fa;">
+                <h3>🎯 Cam kết từ Xanh Việt</h3>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <i class="fa fa-check-circle fa-2x text-success"></i>
+                        <p>Cây khỏe mạnh, đúng giống</p>
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fa fa-truck fa-2x text-info"></i>
+                        <p>Giao hàng nhanh chóng</p>
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fa fa-money fa-2x text-warning"></i>
+                        <p>Giá cả cạnh tranh</p>
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fa fa-heart fa-2x text-danger"></i>
+                        <p>Hài lòng 100%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <div class="text-center" style="font-size: 13px; margin-top: 20px;">
         <p>
             <b>
-                Copyright
-                <script type="text/javascript">
-                    document.write(new Date().getFullYear());
-                </script> Phần mềm quản lý bán hàng | Dev By Trường
+                Copyright © <script>document.write(new Date().getFullYear());</script>
+                Xanh Việt - Cửa hàng cây cảnh | Phát triển bởi Xanh Việt Team
             </b>
         </p>
     </div>
 </main>
+
+<!-- CSS tùy chỉnh -->
+<style>
+    .widget-small {
+        padding: 20px 10px;
+        transition: all 0.3s;
+        height: 100%;
+    }
+
+        .widget-small:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+    .tile {
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+
+    .info-tong {
+        font-size: 12px;
+        color: #666;
+        margin-top: 8px;
+    }
+
+    .fa, .bx {
+        margin-right: 5px;
+    }
+</style>
