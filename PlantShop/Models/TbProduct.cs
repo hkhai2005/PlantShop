@@ -45,7 +45,7 @@ public partial class TbProduct
 
     public int? Star { get; set; }
 
-    public string? Sku { get; set; }
+    public string? SKU { get; set; }
 
     public decimal? Weight { get; set; }
 

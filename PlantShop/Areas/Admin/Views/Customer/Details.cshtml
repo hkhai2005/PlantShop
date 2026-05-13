@@ -1,0 +1,155 @@
+﻿@model PlantShop.Models.TbCustomer
+@{
+    ViewData["Title"] = "Chi tiết khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản lý khách hàng</li>
+            <li class="breadcrumb-item"><a href="#">Chi tiết</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title-w-btn">
+                    <h3 class="title">Chi tiết khách hàng: @Model.FullName</h3>
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-primary">
+                            <i class="fa fa-edit"></i> Sửa thông tin
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tile-body">
+                    <div class="row">
+                        <!-- Cột trái: Avatar -->
+                        <div class="col-md-4 text-center">
+                            <div class="card mb-3">
+                                <div class="card-body p-3">
+                                    @if (!string.IsNullOrEmpty(Model.Avatar))
+                                    {
+                                        <img src="@Model.Avatar" alt="Avatar" class="img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 200px; height: 200px;">
+                                            <i class="fa fa-user fa-5x text-secondary"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Mã KH: #@Model.CustomerId
+                                </div>
+                            </div>
+
+                            @* <!-- Widget trạng thái xác thực -->
+                            <div class="widget-small @(Model.VerifyEmail ? "primary" : "danger") coloured-icon">
+                                <i class="icon fa fa-envelope fa-3x"></i>
+                                <div class="info">
+                                    <h4>Xác thực Email</h4>
+                                    <p><b>@(Model.VerifyEmail ? "Đã xác thực" : "Chưa xác thực")</b></p>
+                                </div>
+                            </div>
+
+                            <div class="widget-small @(Model.VerifyPhone ? "primary" : "danger") coloured-icon mt-2">
+                                <i class="icon fa fa-phone fa-3x"></i>
+                                <div class="info">
+                                    <h4>Xác thực SĐT</h4>
+                                    <p><b>@(Model.VerifyPhone ? "Đã xác thực" : "Chưa xác thực")</b></p>
+                                </div>
+                            </div> *@
+                        </div>
+
+                        <!-- Cột phải: Thông tin chi tiết -->
+                        <div class="col-md-8">
+                            <h5 class="border-bottom pb-2">Thông tin tài khoản</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Tên đăng nhập:</strong> <span class="text-primary">@Model.Username</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Trạng thái:</strong>
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Đang hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Đã khóa</span>
+                                    }
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <strong>Lần đăng nhập cuối:</strong> @(Model.LastLogin?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa đăng nhập")
+                                </div>
+                            </div>
+
+                            <h5 class="border-bottom pb-2 mt-4">Thông tin cá nhân</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-2">
+                                    <small class="text-muted d-block">Họ và tên</small>
+                                    <b>@Model.FullName</b>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <small class="text-muted d-block">Giới tính</small>
+                                    <b>@Model.Gender</b>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <small class="text-muted d-block">Ngày sinh</small>
+                                    <b>@(Model.Birthday?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</b>
+                                </div>
+                            </div>
+
+                            <h5 class="border-bottom pb-2 mt-4">Thông tin liên hệ</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6 mb-2">
+                                    <strong><i class="fa fa-phone"></i> Số điện thoại:</strong>
+                                    <a href="tel:@Model.Phone">@(string.IsNullOrEmpty(Model.Phone) ? "Chưa cập nhật" : Model.Phone)</a>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <strong><i class="fa fa-envelope"></i> Email:</strong>
+                                    <a href="mailto:@Model.Email">@(string.IsNullOrEmpty(Model.Email) ? "Chưa cập nhật" : Model.Email)</a>
+                                </div>
+                            </div>
+
+                            <h5 class="border-bottom pb-2 mt-4">Địa chỉ</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <strong><i class="fa fa-map-marker"></i> Địa chỉ chi tiết:</strong>
+                                    <div class="mt-1">@(string.IsNullOrEmpty(Model.Address) ? "Chưa cập nhật" : Model.Address)</div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.Ward))
+                                {
+                                    <div class="col-md-4 mt-2">
+                                        <small class="text-muted">Phường/Xã</small>
+                                        <div>@Model.Ward</div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.District))
+                                {
+                                    <div class="col-md-4 mt-2">
+                                        <small class="text-muted">Quận/Huyện</small>
+                                        <div>@Model.District</div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Province))
+                                {
+                                    <div class="col-md-4 mt-2">
+                                        <small class="text-muted">Tỉnh/Thành phố</small>
+                                        <div>@Model.Province</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

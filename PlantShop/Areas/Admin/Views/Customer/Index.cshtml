@@ -1,0 +1,139 @@
+﻿@model IEnumerable<PlantShop.Models.TbCustomer>
+@{
+    ViewData["Title"] = "Quản lý khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách khách hàng</b></a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+
+                    <!-- Thanh công cụ -->
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" asp-action="Create" title="Thêm mới">
+                                <i class="fas fa-plus"></i> Thêm khách hàng
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-excel btn-sm" href="#" id="exportExcel" title="Xuất Excel">
+                                <i class="fas fa-file-excel"></i> Xuất Excel
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-delete btn-sm" href="#" id="exportPdf" title="Xuất PDF">
+                                <i class="fas fa-file-pdf"></i> Xuất PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bảng dữ liệu -->
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Ảnh</th>
+                                <th>Tên đăng nhập</th>
+                                <th>Họ và tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Trạng thái</th>
+                                <th>Xác thực</th>
+                                <th width="120">Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@(i++)</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Avatar))
+                                        {
+                                            <img class="img-card-person" src="@item.Avatar" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                        }
+                                        else
+                                        {
+                                            <img class="img-card-person" src="/assets/img/default-avatar.png" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                        }
+                                    </td>
+                                    <td>@Html.DisplayFor(m => item.Username)</td>
+                                    <td>@Html.DisplayFor(m => item.FullName)</td>
+                                    <td>@Html.DisplayFor(m => item.Email)</td>
+                                    <td>@Html.DisplayFor(m => item.Phone)</td>
+                                    <td>@item.Address</td>
+                                    <td>
+                                        @if (item.IsActive == true)
+                                        {
+                                            <span class="badge bg-success">Hoạt động</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Khóa</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @* @if (item.VerifyEmail)
+                                        {
+                                            <span class="badge bg-info"><i class="fa fa-envelope"></i> Email</span>
+                                        }
+                                        @if (item.VerifyPhone)
+                                        {
+                                            <span class="badge bg-warning"><i class="fa fa-phone"></i> SĐT</span>
+                                        } *@
+                                    </td>
+                                    <td class="table-td-center">
+                                        <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-primary btn-sm" title="Chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-primary btn-sm edit" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.CustomerId" class="btn btn-primary btn-sm trash" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script>
+        // Xuất Excel
+        $('#exportExcel').click(function() {
+            var table = document.getElementById("sampleTable");
+            var html = table.outerHTML;
+            var url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            downloadLink.href = url;
+            downloadLink.download = 'DanhSachKhachHang.xls';
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        });
+
+        // Xuất PDF
+        $('#exportPdf').click(function() {
+            window.print();
+        });
+    </script>
+}

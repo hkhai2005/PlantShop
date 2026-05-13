@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController =
+        ViewContext.RouteData.Values["Controller"]?.ToString();
+
+    var currentAction =
+        ViewContext.RouteData.Values["Action"]?.ToString();
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -47,7 +54,7 @@
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
         <div class="app-sidebar__user">
-            <img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
+            <img class="app-sidebar__user-avatar" src="/assets/img/img-anhthe/1.jpg" width="50px"
                  alt="User Image">
             <div>
                 <p class="app-sidebar__user-name"><b>Võ Trường</b></p>
@@ -63,27 +70,42 @@
                 </a>
             </li>
             <li>
-                <a class="app-menu__item active" href="Home/Index">
+                <a class="app-menu__item @(currentController == "Home" ? "active" : "")"
+                   asp-area="Admin"
+                   asp-controller="Home"
+                   asp-action="Index">
                     <i class='app-menu__icon bx bx-tachometer'></i><span class="app-menu__label">Bảng điều khiển</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" asp-area="Admin" asp-controller="Menus" asp-action="Index">
+                <a class="app-menu__item @(currentController == "Menus" ? "active" : "")"
+                   asp-area="Admin"
+                   asp-controller="Menus"
+                   asp-action="Index">
                     <i class="app-menu__icon bx bx-tachometer"></i><span class="app-menu__label">Quản lý menu</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" asp-area="Admin" asp-controller="Accounts" asp-action="Index">
+                <a class="app-menu__item @(currentController == "Accounts" ? "active" : "")"
+                   asp-area="Admin"
+                   asp-controller="Accounts"
+                   asp-action="Index">
                     <i class='app-menu__icon bx bx-id-card'></i> <span class="app-menu__label">Quản lý nhân viên</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" href="#">
+                <a class="app-menu__item @(currentController == "Customer" ? "active" : "")"
+                   asp-area="Admin"
+                   asp-controller="Customer"
+                   asp-action="Index">
                     <i class='app-menu__icon bx bx-user-voice'></i><span class="app-menu__label">Quản lý khách hàng</span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" asp-area="Admin" asp-controller="Shop" asp-action="Index">
+                <a class="app-menu__item @(currentController == "Shop" ? "active" : "")"
+                   asp-area="Admin"
+                   asp-controller="Shop"
+                   asp-action="Index">
                     <i class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span>
                 </a>
             </li>

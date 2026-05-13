@@ -1,0 +1,263 @@
+﻿@model PlantShop.Models.TbAccount
+@using PlantShop.Utilities
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PlantShop Admin Register</title>
+
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="~/admin/plugins/fontawesome-free/css/all.min.css">
+
+    <!-- AdminLTE -->
+    <link rel="stylesheet"
+          href="~/admin/dist/css/adminlte.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            height: 100vh;
+        }
+
+        .register-box {
+            width: 420px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .register-logo a {
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .input-group-text {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+
+        .form-control {
+            border-radius: 0 5px 5px 0;
+        }
+
+        .btn-register {
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        .login-link {
+            font-size: 15px;
+        }
+    </style>
+</head>
+
+<body class="hold-transition register-page">
+
+    <div class="register-box">
+
+        <div class="register-logo">
+            <a href="#"><b>Plant</b>Shop</a>
+        </div>
+
+        <div class="card">
+            <div class="card-body register-card-body">
+
+                <p class="login-box-msg">
+                    Create Admin Account
+                </p>
+
+                <form id="validate"
+                      asp-controller="Register"
+                      asp-action="Index"
+                      method="post">
+
+                    <!-- Full Name -->
+                    <div class="input-group mb-3">
+
+                        <input asp-for="FullName"
+                               type="text"
+                               class="form-control"
+                               placeholder="Full Name">
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="input-group mb-3">
+
+                        <input asp-for="Username"
+                               type="text"
+                               class="form-control"
+                               placeholder="Username">
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user-circle"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="input-group mb-3">
+
+                        <input asp-for="Password"
+                               id="Password"
+                               type="password"
+                               class="form-control"
+                               placeholder="Password">
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="input-group mb-3">
+
+                        <input id="ConfirmPassword"
+                               name="ConfirmPassword"
+                               type="password"
+                               class="form-control"
+                               placeholder="Confirm Password">
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-check"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role -->
+                    <div class="input-group mb-3">
+
+                        <select class="form-control" name="Role">
+                            <option value="Admin">Admin</option>
+                            <option value="User">User</option>
+                        </select>
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user-shield"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="color:red">
+                        @Function._Message
+                    </div>
+
+                    <!-- Checkbox -->
+                    <div class="icheck-primary mb-3">
+
+                        <input type="checkbox"
+                               id="agreeTerms">
+
+                        <label for="agreeTerms">
+                            I agree to the terms
+                        </label>
+                    </div>
+
+                    <!-- Button -->
+                    <button type="submit"
+                            class="btn btn-success btn-block btn-register">
+                        REGISTER
+                    </button>
+
+                </form>
+
+                <hr>
+
+                <p class="text-center login-link">
+                    Already have an account?
+                    <a asp-controller="Login"
+                       asp-action="Index">
+                        Login
+                    </a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/admin/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AdminLTE -->
+    <script src="~/admin/dist/js/adminlte.min.js"></script>
+
+    <!-- Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#validate").validate({
+
+                rules: {
+
+                    FullName: "required",
+
+                    Username: "required",
+
+                    Password: {
+                        required: true,
+                        minlength: 6
+                    },
+
+                    ConfirmPassword: {
+                        required: true,
+                        equalTo: "#Password"
+                    }
+                },
+
+                messages: {
+
+                    FullName: "Please enter full name",
+
+                    Username: "Please enter username",
+
+                    Password: {
+                        required: "Please enter password",
+                        minlength: "Minimum 6 characters"
+                    },
+
+                    ConfirmPassword: {
+                        required: "Please confirm password",
+                        equalTo: "Passwords do not match"
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

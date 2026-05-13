@@ -1,0 +1,241 @@
+﻿@model PlantShop.Models.PlantResultViewModel
+
+@{
+    ViewData["Title"] = "Plant AI";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!-- ##### Breadcrumb Area Start ##### -->
+<div class="breadcrumb-area">
+    <!-- Top Breadcrumb Area -->
+    <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(../assets/img/bg-img/24.jpg);">
+        <h2>PlantAI</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">PlantAI</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### Breadcrumb Area End ##### -->
+<style>
+    body {
+        background: #f4fff6;
+    }
+
+    .ai-container {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .ai-card {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .upload-box {
+        border: 2px dashed #28a745;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        background: #ffffff;
+        transition: 0.3s;
+    }
+
+        .upload-box:hover {
+            background: #f8fff9;
+        }
+
+    .btn-detect {
+        width: 100%;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .result-img {
+        width: 100%;
+        max-height: 350px;
+        object-fit: cover;
+        border-radius: 15px;
+    }
+
+    .plant-title {
+        font-size: 32px;
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .accuracy-badge {
+        display: inline-block;
+        background: #d4edda;
+        color: #155724;
+        padding: 8px 15px;
+        border-radius: 30px;
+        font-weight: bold;
+    }
+
+    .description-box {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 20px;
+        line-height: 1.8;
+    }
+</style>
+
+<div class="container ai-container">
+
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-success">
+            🌱 AI Plant Recognition
+        </h1>
+
+        <p class="text-muted">
+            Upload a plant image and let AI identify it instantly
+        </p>
+    </div>
+
+    <div class="card shadow-lg ai-card p-4">
+
+        <form method="post" enctype="multipart/form-data">
+
+            <div class="upload-box mb-4">
+
+                <input type="file"
+                       name="image"
+                       id="imageInput"
+                       class="form-control"
+                       accept="image/*"
+                       required />
+
+                <div class="mt-4 text-center">
+
+                    <img id="previewImage"
+                         src=""
+                         style="
+                display:none;
+                max-width:100%;
+                max-height:300px;
+                border-radius:15px;
+                object-fit:cover;
+             " />
+
+                </div>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success btn-detect">
+                Detect Plant
+            </button>
+
+        </form>
+
+    </div>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger mt-4 shadow-sm">
+            @ViewBag.Error
+        </div>
+    }
+
+    @if (Model != null)
+    {
+        <div class="card shadow-lg ai-card mt-5 p-4">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-5">
+
+
+                    @if (ViewBag.UploadedImage != null)
+                    {
+                        <div class="card shadow-lg p-4 mt-4">
+
+                            <h4 class="mb-3 text-success">
+                                Uploaded Image
+                            </h4>
+
+                            <img src="@ViewBag.UploadedImage"
+                                 class="img-fluid rounded"
+                                 style="
+                            max-height:350px;
+                            object-fit:cover;
+                         " />
+
+                        </div>
+                    }
+
+                    @* @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl"
+                             class="result-img" /> 
+
+                    }*@
+
+                </div>
+
+                <div class="col-md-7">
+
+                    <div class="plant-title mb-3">
+                        @Model.PlantName
+                    </div>
+
+                    <div class="accuracy-badge mb-4">
+                        Accuracy: @Model.Probability %
+                    </div>
+
+                    <div class="description-box">
+
+                        <h5 class="mb-3">
+                            🌿 Plant Description
+                        </h5>
+
+                        <p>
+                            @Model.Description
+                        </p>
+                    </div>
+                    <p><strong>Family:</strong> @Model.Family</p>
+
+                    <p><strong>Genus:</strong> @Model.Genus</p>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+<script>
+
+    const imageInput =
+        document.getElementById("imageInput");
+
+    const previewImage =
+        document.getElementById("previewImage");
+
+    imageInput.addEventListener("change", function (e)
+    {
+        const file = e.target.files[0];
+
+        if (file)
+        {
+            previewImage.src =
+                URL.createObjectURL(file);
+
+            previewImage.style.display = "block";
+        }
+    });
+
+</script>

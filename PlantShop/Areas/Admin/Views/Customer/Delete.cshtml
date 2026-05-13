@@ -1,0 +1,106 @@
+﻿@model PlantShop.Models.TbCustomer
+@{
+    ViewData["Title"] = "Xóa khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản lý khách hàng</li>
+            <li class="breadcrumb-item"><a href="#">Xóa khách hàng</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Xác nhận xóa khách hàng</h3>
+                <div class="tile-body">
+
+                    <!-- Cảnh báo -->
+                    <div class="alert alert-warning text-center">
+                        <i class="fa fa-exclamation-triangle fa-2x mb-2"></i><br />
+                        <strong>Cảnh báo:</strong> Bạn đang thực hiện xóa khách hàng
+                        <strong>@Model.FullName</strong> (ID: @Model.CustomerId).
+                        Hành động này không thể hoàn tác!
+                    </div>
+
+                    <div class="row d-flex justify-content-center mt-4">
+                        <!-- Avatar -->
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.Avatar))
+                            {
+                                <img src="@Model.Avatar" alt="@Model.FullName" class="img-fluid rounded shadow-sm" style="max-height: 200px; width: 200px; object-fit: cover; border-radius: 50%;" />
+                            }
+                            else
+                            {
+                                <div class="p-5 bg-light border rounded-circle d-inline-block" style="width: 200px; height: 200px;">
+                                    <i class="fa fa-user fa-3x text-secondary mt-5"></i>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Thông tin tóm tắt -->
+                        <div class="col-md-6">
+                            <h3 class="text-primary">@Model.FullName</h3>
+                            <dl class="row mt-3">
+                                <dt class="col-sm-4">Tên đăng nhập:</dt>
+                                <dd class="col-sm-8 font-weight-bold">@Model.Username</dd>
+
+                                <dt class="col-sm-4">Email:</dt>
+                                <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Email) ? "Chưa cập nhật" : Model.Email)</dd>
+
+                                <dt class="col-sm-4">Số điện thoại:</dt>
+                                <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Phone) ? "Chưa cập nhật" : Model.Phone)</dd>
+
+                                <dt class="col-sm-4">Ngày sinh:</dt>
+                                <dd class="col-sm-8">@(Model.Birthday?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</dd>
+
+                                <dt class="col-sm-4">Giới tính:</dt>
+                                <dd class="col-sm-8">@Model.Gender</dd>
+
+                                <dt class="col-sm-4">Trạng thái:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">Đã khóa</span>
+                                    }
+                                </dd>
+
+                                <dt class="col-sm-4">Ngày tham gia:</dt>
+                                <dd class="col-sm-8">@(Model.LastLogin?.ToString("dd/MM/yyyy") ?? "Chưa xác định")</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- Địa chỉ đầy đủ -->
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="alert alert-info">
+                                <strong><i class="fa fa-map-marker"></i> Địa chỉ:</strong> @Model.Address
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="tile-footer text-center mt-3">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="CustomerId" />
+                        <button type="submit" class="btn btn-danger btn-lg px-4" onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này?')">
+                            <i class="fa fa-trash"></i> Xóa vĩnh viễn
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4 ml-2">
+                            <i class="fa fa-times"></i> Hủy bỏ
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

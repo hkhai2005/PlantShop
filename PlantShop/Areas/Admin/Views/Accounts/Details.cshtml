@@ -28,16 +28,19 @@
                         <div class="col-md-4">
                             <div class="card mb-3">
                                 <div class="card-body text-center p-2">
-                                    @* @if (!string.IsNullOrEmpty(Model.Image))
+                                    @if (!string.IsNullOrEmpty(Model.Image))
                                     {
-                                        <img src="@Model.Image" alt="@Model.FullName" class="img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" />
+                                        <img src="@Url.Content("~/" + Model.Image.Replace("../", ""))"
+                                             alt=""
+                                             class="img-fluid rounded"
+                                             style="width: 80px; height: 60px; object-fit: contain;" />
                                     }
                                     else
                                     {
                                         <div class="alert alert-secondary m-0" style="height: 200px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fa fa-user fa-5x text-muted"></i>
                                         </div>
-                                    } *@
+                                    }
                                 </div>
                                 <div class="card-footer text-muted text-center small">
                                     Mã NV: #@Model.AccountId
@@ -89,7 +92,7 @@
                                     <small class="text-muted d-block">Họ và tên</small>
                                     <b>@Html.DisplayFor(model => model.FullName)</b>
                                 </div>
-                                @* <div class="col-md-6 mb-2">
+                                <div class="col-md-6 mb-2">
                                     <small class="text-muted d-block">Giới tính</small>
                                     <b>@Html.DisplayFor(model => model.Gender)</b>
                                 </div>
@@ -97,7 +100,7 @@
                                     <small class="text-muted d-block">Ngày sinh</small>
                                     <b>@Html.DisplayFor(model => model.DateOfBirth)</b>
                                 </div>
-                                <div class="col-md-6 mb-2">
+                                @* <div class="col-md-6 mb-2">
                                     <small class="text-muted d-block">CCCD/CMND</small>
                                     <b>@Html.DisplayFor(model => model.Cccd)</b>
                                 </div> *@
@@ -116,7 +119,7 @@
                                 </div>
                                 <div class="col-md-12 mt-2">
                                     <strong><i class="fa fa-map-marker"></i> Địa chỉ:</strong>
-                                    @* <span>@Html.DisplayFor(model => model.Address)</span> *@
+                                    <span>@Html.DisplayFor(model => model.Address)</span>
                                 </div>
                             </div>
                         </div>

@@ -409,7 +409,7 @@ public partial class PlantShopDbContext : DbContext
 
             entity.ToTable("tb_Product");
 
-            entity.HasIndex(e => e.Sku, "UQ__tb_Produ__CA1ECF0D93BEE6F8").IsUnique();
+            entity.HasIndex(e => e.SKU, "UQ__tb_Produ__CA1ECF0D93BEE6F8").IsUnique();
 
             entity.Property(e => e.Alias).HasMaxLength(250);
             entity.Property(e => e.CreatedBy).HasMaxLength(150);
@@ -420,7 +420,7 @@ public partial class PlantShopDbContext : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.ModifiedBy).HasMaxLength(150);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.Sku)
+            entity.Property(e => e.SKU)
                 .HasMaxLength(50)
                 .HasColumnName("SKU");
             entity.Property(e => e.SoldCount).HasDefaultValue(0);

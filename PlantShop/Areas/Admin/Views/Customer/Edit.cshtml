@@ -1,0 +1,161 @@
+﻿@model PlantShop.Models.TbCustomer
+@{
+    ViewData["Title"] = "Sửa thông tin khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản lý khách hàng</li>
+            <li class="breadcrumb-item"><a href="#">Sửa thông tin</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Chỉnh sửa thông tin khách hàng: @Model.FullName</h3>
+                <div class="tile-body">
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="row">
+                        <input type="hidden" asp-for="CustomerId" />
+                        <input type="hidden" asp-for="LastLogin" />
+                        <input type="hidden" asp-for="ResetPasswordToken" />
+                        <input type="hidden" asp-for="TokenExpiry" />
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="Username" class="control-label">Tên đăng nhập</label>
+                            <input asp-for="Username" class="form-control" readonly />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="Password" class="control-label">Mật khẩu (để trống nếu không đổi)</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu mới..." />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="FullName" class="control-label">Họ và tên</label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label asp-for="Birthday" class="control-label">Ngày sinh</label>
+                            <input asp-for="Birthday" class="form-control" type="date" />
+                            <span asp-validation-for="Birthday" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label asp-for="Gender" class="control-label">Giới tính</label>
+                            <select asp-for="Gender" class="form-control">
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="true">Nam</option>
+                                <option value="false">Nữ</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label asp-for="Phone" class="control-label">Số điện thoại</label>
+                            <input asp-for="Phone" class="form-control" type="tel" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label asp-for="Email" class="control-label">Email</label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="Address" class="control-label">Địa chỉ</label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label asp-for="Ward" class="control-label">Phường/Xã</label>
+                            <input asp-for="Ward" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label asp-for="District" class="control-label">Quận/Huyện</label>
+                            <input asp-for="District" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label asp-for="Province" class="control-label">Tỉnh/Thành phố</label>
+                            <input asp-for="Province" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label asp-for="IsActive" class="control-label">Trạng thái</label>
+                            <select asp-for="IsActive" class="form-control">
+                                <option value="true">Hoạt động</option>
+                                <option value="false">Tạm khóa</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label asp-for="VerifyEmail" class="control-label">Xác thực Email</label>
+                            <select asp-for="VerifyEmail" class="form-control">
+                                <option value="false">Chưa xác thực</option>
+                                <option value="true">Đã xác thực</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label asp-for="VerifyPhone" class="control-label">Xác thực SĐT</label>
+                            <select asp-for="VerifyPhone" class="form-control">
+                                <option value="false">Chưa xác thực</option>
+                                <option value="true">Đã xác thực</option>
+                            </select>
+                        </div>
+
+                        <!-- Avatar -->
+                        <div class="form-group col-md-12">
+                            <label asp-for="Avatar" class="control-label">Ảnh đại diện</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-success btn-image-picker" onclick="document.getElementById('avatarInput').click()">
+                                        <i class="fa fa-image"></i> Chọn ảnh
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control" id="file_input" asp-for="Avatar" readonly>
+                                <input type="file" id="avatarInput" style="display:none" accept="image/*" onchange="previewImage(this)" />
+                            </div>
+                            <div id="avatarPreview" class="mt-2" @(string.IsNullOrEmpty(Model.Avatar) ? "style=display:none" : "")>
+                                <img id="previewImg" src="@Model.Avatar" style="max-height: 100px; border-radius: 5px;" />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <button class="btn btn-save" type="submit"><i class="fa fa-save"></i> Cập nhật</button>
+                            <a asp-action="Index" class="btn btn-cancel"><i class="fa fa-times"></i> Hủy bỏ</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#previewImg').attr('src', e.target.result);
+                    $('#avatarPreview').show();
+                    $('#file_input').val(e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
