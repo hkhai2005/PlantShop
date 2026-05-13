@@ -1,0 +1,74 @@
+﻿@model PlantShop.Models.Video
+@{
+    ViewData["Title"] = "Xóa video";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản lý video</li>
+            <li class="breadcrumb-item"><a href="#">Xóa video</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Xác nhận xóa video</h3>
+                <div class="tile-body">
+
+                    <div class="alert alert-danger text-center">
+                        <i class="fa fa-exclamation-triangle fa-2x mb-2"></i><br />
+                        <strong>CẢNH BÁO:</strong> Bạn đang thực hiện xóa video <strong>@Model.Title</strong>
+                        <br />Hành động này sẽ xóa <strong>VĨNH VIỄN</strong> video khỏi hệ thống!
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <img src="@Model.Thumbnail"
+                                         alt="@Model.Title"
+                                         style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 10px;" />
+                                    <h5 class="mt-3">@Model.Title</h5>
+                                    <table class="table table-sm mt-3">
+                                        <tr>
+                                            <th>ID:</th>
+                                            <td>@Model.VideoId</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Danh mục:</th>
+                                            <td>@(string.IsNullOrEmpty(Model.Category) ? "--" : Model.Category)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Lượt xem:</th>
+                                            <td>@(Model.Views?.ToString("N0") ?? "0")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Ngày tạo:</th>
+                                            <td>@(Model.CreatedDate?.ToString("dd/MM/yyyy") ?? "--")</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tile-footer text-center mt-3">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="VideoId" />
+                        <button type="submit" class="btn btn-danger btn-lg px-4"
+                                onclick="return confirm('Bạn có chắc chắn muốn xóa video này? Hành động không thể hoàn tác!')">
+                            <i class="fa fa-trash"></i> Xóa vĩnh viễn
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4 ml-2">
+                            <i class="fa fa-times"></i> Hủy bỏ
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

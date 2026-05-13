@@ -1,0 +1,134 @@
+﻿@model PlantShop.Models.Video
+@{
+    ViewData["Title"] = "Chi tiết video";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item">Quản lý video</li>
+            <li class="breadcrumb-item"><a href="#">Chi tiết</a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title-w-btn">
+                    <h3 class="title">Chi tiết video: @Model.Title</h3>
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@Model.VideoId" class="btn btn-primary">
+                            <i class="fa fa-edit"></i> Sửa video
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tile-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Video -->
+                            <div class="embed-responsive embed-responsive-16by9 mb-4">
+                                <iframe class="embed-responsive-item"
+                                        src="https://www.youtube.com/embed/@Model.YoutubeId"
+                                        frameborder="0"
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <!-- Thông tin -->
+                            <div class="card">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0">📋 Thông tin video</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <th width="100">ID:</th>
+                                            <td>@Model.VideoId</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Tiêu đề:</th>
+                                            <td><strong>@Model.Title</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Danh mục:</th>
+                                            <td>@(string.IsNullOrEmpty(Model.Category) ? "--" : Model.Category)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Thời lượng:</th>
+                                            @* <td>@Model.DurationDisplay</td> *@
+                                        </tr>
+                                        <tr>
+                                            <th>Lượt xem:</th>
+                                            <td>@(Model.Views?.ToString("N0") ?? "0")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Thứ tự:</th>
+                                            <td>@(Model.SortOrder ?? 0)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Trạng thái:</th>
+                                            @* <td>
+                                                @if (Model.IsActive)
+                                                {
+                                                    <span class="badge bg-success">Hiển thị</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Ẩn</span>
+                                                }
+                                            </td> *@
+                                        </tr>
+                                        <tr>
+                                            <th>Ngày tạo:</th>
+                                            <td>@(Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm") ?? "--")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Người tạo:</th>
+                                            <td>@(string.IsNullOrEmpty(Model.CreatedBy) ? "--" : Model.CreatedBy)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Cập nhật:</th>
+                                            <td>@(Model.ModifiedDate?.ToString("dd/MM/yyyy HH:mm") ?? "--")</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mô tả -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0">📝 Mô tả</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>@(string.IsNullOrEmpty(Model.Description) ? "Chưa có mô tả" : Model.Description)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- YouTube Link -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="alert alert-light">
+                                <strong><i class="fa fa-link"></i> Link YouTube:</strong>
+                                <a href="https://www.youtube.com/watch?v=@Model.YoutubeId" target="_blank">
+                                    https://www.youtube.com/watch?v=@Model.YoutubeId
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
