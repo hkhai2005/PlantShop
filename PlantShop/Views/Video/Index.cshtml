@@ -1,0 +1,134 @@
+﻿@model List<PlantShop.Models.Video>
+@{
+    ViewData["Title"] = "Video hướng dẫn trồng cây";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Layout public của bạn
+}
+
+<!-- ##### Breadcrumb Area Start ##### -->
+<div class="breadcrumb-area">
+    <!-- Top Breadcrumb Area -->
+    <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(../assets/img/bg-img/24.jpg);">
+        <h2>Video</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Video</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### Breadcrumb Area End ##### -->
+<div class="container mt-4">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="text-success">🎬 Video về cây</h1>
+        <p class="lead">Tổng hợp các video hữu ích giúp bạn chăm sóc cây cảnh tốt hơn</p>
+    </div>
+
+    <!-- Thanh tìm kiếm và lọc -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <form method="get" class="d-flex">
+                <input type="text" name="search" class="form-control me-2"
+                       placeholder="🔍 Tìm kiếm video..." value="@ViewBag.SearchKeyword">
+                <button type="submit" class="btn btn-success">Tìm</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" id="categoryFilter" onchange="location.href='/Video?category='+this.value">
+                <option value="">-- Tất cả danh mục --</option>
+                @foreach (var cat in ViewBag.Categories)
+                {
+                    <option value="@cat" selected="@(ViewBag.CurrentCategory == cat)">@cat</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <!-- Danh sách video -->
+    <div class="row">
+        @if (Model.Any())
+        {
+            @foreach (var video in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card video-card h-100">
+                        <a href="/Video/Details/@video.VideoId">
+                            <img src="@video.Thumbnail"
+                                 class="card-img-top video-thumb"
+                                 alt="@video.Title">
+                            <div class="video-duration">@video.Views</div>
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/Video/Details/@video.VideoId" class="text-decoration-none text-dark">
+                                    @video.Title
+                                </a>
+                            </h5>
+                            <p class="card-text text-muted small">@video.Description</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <small class="text-muted">
+                                <i class="fa fa-eye"></i> @(video.Views ?? 0) lượt xem
+                            </small>
+                            @if (!string.IsNullOrEmpty(video.Category))
+                            {
+                                <span class="badge bg-secondary float-end text-white">@video.Category</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    Chưa có video nào. Vui lòng quay lại sau!
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .video-card {
+        transition: transform 0.3s;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+    .video-thumb {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .video-duration {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .card-title a:hover {
+        color: #2e7d32 !important;
+    }
+</style>

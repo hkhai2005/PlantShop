@@ -1,0 +1,160 @@
+﻿@model IEnumerable<PlantShop.Models.Video>
+@{
+    ViewData["Title"] = "Quản lý video";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách video</b></a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+
+                    <!-- Thanh công cụ -->
+                    <div class="row element-button mb-3">
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" asp-action="Create" title="Thêm mới">
+                                <i class="fas fa-plus"></i> Thêm video mới
+                            </a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a class="btn btn-excel btn-sm" href="#" id="exportExcel" title="Xuất Excel">
+                                <i class="fas fa-file-excel"></i> Xuất Excel
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Form tìm kiếm và lọc -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <form method="get" class="row g-3">
+                                <div class="col-md-4">
+                                    <input type="text" name="searchTerm" class="form-control"
+                                           placeholder="🔍 Tìm kiếm theo tiêu đề..."
+                                           value="@ViewBag.SearchTerm" />
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="category" class="form-control">
+                                        <option value="">-- Tất cả danh mục --</option>
+                                        @foreach (var cat in ViewBag.Categories)
+                                        {
+                                            <option value="@cat" selected="@(ViewBag.CurrentCategory == cat)">
+                                                @cat
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-search"></i> Tìm kiếm
+                                    </button>
+                                    <a asp-action="Index" class="btn btn-secondary">
+                                        <i class="fa fa-refresh"></i> Làm mới
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Bảng dữ liệu -->
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>ID</th>
+                                    <th>Ảnh thumbnail</th>
+                                    <th>Tiêu đề</th>
+                                    <th>Danh mục</th>
+                                    <th>Thời lượng</th>
+                                    <th>Lượt xem</th>
+                                    <th>Thứ tự</th>
+                                    <th>Trạng thái</th>
+                                    <th width="140">Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 1;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="text-center">@(i++)</td>
+                                        <td class="text-center">@item.VideoId</td>
+                                        <td>
+                                            <img src="@item.Thumbnail"
+                                                 alt="@item.Title"
+                                                 style="width: 80px; height: 60px; object-fit: cover; border-radius: 5px;" />
+                                        </td>
+                                        <td>
+                                            <strong>@item.Title</strong>
+                                            <br />
+                                            <small class="text-muted">@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</small>
+                                        </td>
+                                        <td>@(string.IsNullOrEmpty(item.Category) ? "--" : item.Category)</td>
+                                        @* <td>@item.DurationDisplay</td> *@
+                                        <td>@(item.Views?.ToString("N0") ?? "0")</td>
+                                        <td>@(item.SortOrder ?? 0)</td>
+                                        <td>
+                                            @if (item.IsActive == true)
+                                            {
+                                                <span class="badge bg-success">Hiển thị</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Ẩn</span>
+                                            }
+                                        </td>
+                                        <td class="table-td-center">
+                                            <a asp-action="Details" asp-route-id="@item.VideoId" class="btn btn-primary btn-sm" title="Chi tiết">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.VideoId" class="btn btn-primary btn-sm edit" title="Sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.VideoId" class="btn btn-primary btn-sm trash" title="Xóa">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-info text-center mt-3">
+                            Chưa có video nào. <a asp-action="Create">Thêm video mới</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script>
+        // Xuất Excel
+        $('#exportExcel').click(function() {
+            var table = document.getElementById("sampleTable");
+            var html = table.outerHTML;
+            var url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+            var downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            downloadLink.href = url;
+            downloadLink.download = 'DanhSachVideo.xls';
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        });
+    </script>
+}

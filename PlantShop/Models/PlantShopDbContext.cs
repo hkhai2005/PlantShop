@@ -65,6 +65,8 @@ public partial class PlantShopDbContext : DbContext
 
     public virtual DbSet<TbWishlist> TbWishlists { get; set; }
 
+    public virtual DbSet<Video> Videos { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=HKhai\\SQLEXPRESS;Initial Catalog=PlantShopDB;Integrated Security=True;TrustServerCertificate=True;");
@@ -568,6 +570,28 @@ public partial class PlantShopDbContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.TbWishlists)
                 .HasForeignKey(d => d.ProductId)
                 .HasConstraintName("FK__tb_Wishli__Produ__114A936A");
+        });
+
+        modelBuilder.Entity<Video>(entity =>
+        {
+            entity.HasKey(e => e.VideoId).HasName("PK__Video__BAE5126A63F8111B");
+
+            entity.ToTable("Video");
+
+            entity.Property(e => e.Category).HasMaxLength(50);
+            entity.Property(e => e.CreatedBy).HasMaxLength(100);
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.ModifiedBy).HasMaxLength(100);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.SortOrder).HasDefaultValue(0);
+            entity.Property(e => e.Thumbnail).HasMaxLength(255);
+            entity.Property(e => e.Title).HasMaxLength(200);
+            entity.Property(e => e.Views).HasDefaultValue(0);
+            entity.Property(e => e.YoutubeId).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);

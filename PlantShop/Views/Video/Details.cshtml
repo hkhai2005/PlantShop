@@ -1,0 +1,96 @@
+﻿@model PlantShop.Models.Video
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ##### Breadcrumb Area Start ##### -->
+<div class="breadcrumb-area">
+    <!-- Top Breadcrumb Area -->
+    <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(../assets/img/bg-img/24.jpg);">
+        <h2>Chi tiết Video</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Chi tiết video</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### Breadcrumb Area End ##### -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Video -->
+            <div class="card mb-4">
+                <div class="card-body p-0">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/@Model.YoutubeId"
+                                 title="@Model.Title"
+                                 frameborder="0"
+                                 allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title text-success">@Model.Title</h2>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">
+                            <i class="fa fa-eye"></i> @(Model.Views ?? 0) lượt xem
+                        </span>
+                        <span class="text-muted">
+                            @* <i class="fa fa-clock-o"></i> @Model.DurationDisplay *@
+                        </span>
+                        @if (!string.IsNullOrEmpty(Model.Category))
+                        {
+                            <span class="badge bg-success">@Model.Category</span>
+                        }
+                    </div>
+                    <hr />
+                    <h5>📝 Mô tả</h5>
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+        </div>
+
+        @* <div class="col-md-4">
+            <!-- Video liên quan -->
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">📺 Video liên quan</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RelatedVideos != null && ((List<PlantShop.Models.Video>)ViewBag.RelatedVideos).Any())
+                    {
+                        @foreach (var related in ViewBag.RelatedVideos)
+                        {
+                            <div class="mb-3 d-flex">
+                                <a href="/Video/Details/@related.VideoId" class="me-2">
+                                    <img src="@related.ThumbnailUrl" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px;">
+                                </a>
+                                <div>
+                                    <a href="/Video/Details/@related.VideoId" class="text-decoration-none">
+                                        <strong>@related.Title</strong>
+                                    </a>
+                                    <br />
+                                    <small class="text-muted">@(related.Views ?? 0) lượt xem</small>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">Chưa có video liên quan</p>
+                    }
+                </div>
+            </div>
+        </div> *@
+    </div>
+</div>
