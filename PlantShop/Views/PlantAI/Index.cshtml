@@ -205,6 +205,41 @@
                         <p>
                             @Model.Description
                         </p>
+
+                        </div><div class="description-box mt-4">
+
+                            <h4 class="text-success mb-3">
+                                🌍 Wikipedia Information
+                            </h4>
+
+                            <p>
+                                @Model.WikiDescription
+                            </p>
+                        @if (!string.IsNullOrEmpty(Model.WikiUrl))
+                        {
+                            <a href="@Model.WikiUrl"
+                               target="_blank"
+                               class="btn btn-success mt-3">
+
+                                🌍 Read More on Wikipedia
+
+                            </a>
+                        }
+
+    @*                     <div class="description-box mt-4">
+
+                            <h4 class="text-success mb-3">
+                                🤖 AI Plant Care Guide
+                            </h4>
+
+                            <pre style="
+            white-space: pre-wrap;
+            font-family: inherit;
+        ">
+    @Model.AIDescription
+        </pre>
+
+                        </div> *@
                     </div>
                     <p><strong>Family:</strong> @Model.Family</p>
 
@@ -217,6 +252,41 @@
     }
 
 </div>
+@* @if (ViewBag.GeminiRaw != null)
+{
+    <div class="alert alert-warning mt-4">
+
+        <h5>Gemini RAW Response</h5>
+
+        <pre>
+    @ViewBag.GeminiRaw
+            </pre>
+
+    </div>
+} *@
+@* @if (ViewBag.PlantNameDebug != null)
+{
+    <div class="alert alert-info mt-3">
+
+        <strong>Plant Name:</strong>
+
+        @ViewBag.PlantNameDebug
+
+    </div>
+}
+
+@if (ViewBag.WikiRaw != null)
+{
+    <div class="alert alert-warning mt-3">
+
+        <strong>Wikipedia RAW:</strong>
+
+        <pre>
+    @ViewBag.WikiRaw
+            </pre>
+
+    </div>
+} *@
 <script>
 
     const imageInput =

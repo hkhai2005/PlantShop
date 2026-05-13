@@ -1,16 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using PlantShop.Models;
+using System.Text;
 
 namespace PlantShop.Controllers
 {
     public class PlantAIController : Controller
     {
+
+        private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _environment;
 
-        public PlantAIController(IWebHostEnvironment environment)
+        public PlantAIController(
+    IWebHostEnvironment environment,
+    IConfiguration configuration)
         {
             _environment = environment;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -55,9 +61,13 @@ namespace PlantShop.Controllers
             ViewBag.UploadedImage = imageUrl;
             // 🔑 YOUR API KEY
             string apiKey = "2b102sj4hBTuHIIxxOULSeS7";
-
+            
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add(
+    "User-Agent",
+    "PlantShopApp/1.0"
+);
                 // ✅ Pl@ntNet endpoint
                 string url =
                     $"https://my-api.plantnet.org/v2/identify/all?api-key={apiKey}";
@@ -126,7 +136,141 @@ namespace PlantShop.Controllers
                         return View();
                     }
 
-                    PlantResultViewModel model =
+                    string plantName =
+    firstResult["species"]?["commonNames"]?
+    .FirstOrDefault()?.ToString();
+
+                    if (string.IsNullOrEmpty(plantName))
+                    {
+                        plantName =
+                            firstResult["species"]?["scientificNameWithoutAuthor"]
+                            ?.ToString();
+                    }
+                    Console.WriteLine("PLANT NAME: " + plantName);
+
+                    ViewBag.PlantNameDebug = plantName;
+                    string wikiDescription = "";
+                    string wikiUrlPage = "";
+                    try
+                    {
+                        string wikiUrl =
+                            $"https://en.wikipedia.org/api/rest_v1/page/summary/{Uri.EscapeDataString(plantName)}";
+
+                        var wikiResponse =
+                            await client.GetAsync(wikiUrl);
+
+                        var wikiResult =
+                            await wikiResponse.Content.ReadAsStringAsync();
+
+                        Console.WriteLine(wikiResult);
+                        Console.WriteLine(wikiResult);
+
+                        ViewBag.WikiRaw = wikiResult;
+                        if (wikiResponse.IsSuccessStatusCode)
+                        {
+                            JObject wikiObj =
+                                JObject.Parse(wikiResult);
+                            wikiUrlPage =
+                            wikiObj["content_urls"]?["desktop"]?["page"]
+                            ?.ToString();
+                            wikiDescription =
+                                wikiObj["extract"]?.ToString();
+                        }
+                        else
+                        {
+                            wikiDescription =
+                                "Wikipedia information not found.";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        wikiDescription =
+                            ex.Message;
+                    }
+                    //                    string prompt =
+                    //                        $@"
+                    //                        Give detailed care information about {plantName}.
+
+                    //                        Include:
+                    //                        - Description
+                    //                        - Watering
+                    //                        - Sunlight
+                    //                        - Temperature
+                    //                        - Humidity
+                    //                        - Soil
+                    //                        - Fertilizer
+                    //                        - Toxicity
+                    //                        - Care Tips
+
+                    //                        Format nicely.
+                    //                        ";
+
+
+                    //                    var geminiUrl =
+                    //$"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={geminiKey}";
+
+                    //                    var geminiBody = new
+                    //                    {
+                    //                        contents = new[]
+                    //                        {
+                    //        new
+                    //        {
+                    //            parts = new[]
+                    //            {
+                    //                new
+                    //                {
+                    //                    text = prompt
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+                    //                    };
+
+                    //                    var json =
+                    //                        Newtonsoft.Json.JsonConvert.SerializeObject(
+                    //                            geminiBody
+                    //                        );
+
+                    //                    var geminiContent =
+                    //                        new StringContent(
+                    //                            json,
+                    //                            Encoding.UTF8,
+                    //                            "application/json"
+                    //                        );
+
+                    //                    var geminiResponse =
+                    //                        await client.PostAsync(
+                    //                            geminiUrl,
+                    //                            geminiContent
+                    //                        );
+
+                    //                    var geminiResult =
+                    //                        await geminiResponse.Content.ReadAsStringAsync();
+                    //                    Console.WriteLine(geminiResult);
+
+                    //                    ViewBag.GeminiRaw = geminiResult;
+                    //                    string aiText = "";
+
+                    //                    try
+                    //                    {
+                    //                        JObject geminiObj =
+                    //                            JObject.Parse(geminiResult);
+
+                    //                        aiText =
+                    //                            geminiObj["candidates"]?[0]?["content"]?["parts"]?[0]?["text"]
+                    //                            ?.ToString();
+                    //                    }
+                    //                    catch (Exception ex)
+                    //                    {
+                    //                        aiText =
+                    //                            "AI ERROR: " + ex.Message;
+
+                    //                        ViewBag.GeminiRaw = geminiResult;
+                    //                    }
+
+
+
+                    PlantResultViewModel model = 
                         new PlantResultViewModel
                         {
                             PlantName =
@@ -152,11 +296,14 @@ namespace PlantShop.Controllers
 
                                 Genus =
                                 firstResult["species"]?["genus"]?["scientificName"]
-                                ?.ToString()
+                                ?.ToString(),
+
+                            WikiDescription = wikiDescription,
 
 
+                            WikiUrl = wikiUrlPage
 
-                            };
+                        };
 
                     return View(model);
                 }

@@ -12,5 +12,8 @@
         public string Family { get; set; }
 
         public string Genus { get; set; }
+
+        public string WikiDescription { get; set; }
+        public string WikiUrl { get; set; }
     }
 }
