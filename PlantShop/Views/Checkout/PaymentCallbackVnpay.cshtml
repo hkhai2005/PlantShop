@@ -1,0 +1,37 @@
+﻿@* @using PlantShop
+@model PaymentResponseModel
+
+@{
+    ViewData["Title"] = "Kết quả thanh toán VNPAY thành công";
+}
+
+@* <div class="container"> 
+<div class="container" style="margin-top: 10% !important; margin-bottom: 10%;">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-success text-white text-center">
+            <h3 class="mb-0">
+                <i class="bi bi-check-circle-fill me-2"></i> Thanh toán thành công!
+            </h3>
+        </div>
+        <div class="card-body text-center">
+            <p class="lead mb-4">Cảm ơn bạn đã thanh toán qua <strong>VNPAY</strong>.</p>
+
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-start">
+                    <p><strong>Mã đơn hàng:</strong> @Model.OrderId</p>
+                    <p><strong>Thông tin đơn hàng:</strong> @Model.OrderDescription</p>
+                    <p><strong>Phương thức thanh toán:</strong> @Model.PaymentMethod</p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a asp-controller="Account" asp-action="History" class="btn btn-primary">
+                    <i class="bi bi-clock-history me-1"></i> Xem lịch sử đơn hàng
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-house-door me-1"></i> Về trang chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</div> *@

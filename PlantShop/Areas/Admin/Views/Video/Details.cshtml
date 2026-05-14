@@ -73,8 +73,8 @@
                                         </tr>
                                         <tr>
                                             <th>Trạng thái:</th>
-                                            @* <td>
-                                                @if (Model.IsActive)
+                                            <td>
+                                                @if (@Model.IsActive== true)
                                                 {
                                                     <span class="badge bg-success">Hiển thị</span>
                                                 }
@@ -82,7 +82,7 @@
                                                 {
                                                     <span class="badge bg-secondary">Ẩn</span>
                                                 }
-                                            </td> *@
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Ngày tạo:</th>

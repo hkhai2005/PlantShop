@@ -100,7 +100,7 @@
                                             <small class="text-muted">@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</small>
                                         </td>
                                         <td>@(string.IsNullOrEmpty(item.Category) ? "--" : item.Category)</td>
-                                        @* <td>@item.DurationDisplay</td> *@
+                                        <td>@item.Duration</td>
                                         <td>@(item.Views?.ToString("N0") ?? "0")</td>
                                         <td>@(item.SortOrder ?? 0)</td>
                                         <td>

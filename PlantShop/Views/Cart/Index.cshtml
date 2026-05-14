@@ -4,24 +4,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- Breadcrumb Area Start -->
-<section class="breadcrumb-area bg-img bg-overlay" style="background-image: url(/assets/img/bg-img/1.jpg);">
-    <div class="container h-100">
-        <div class="row h-100 align-items-center">
+<div class="breadcrumb-area">
+    <!-- Top Breadcrumb Area -->
+    <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(/assets/img/bg-img/24.jpg);">
+        <h2>Giỏ hàng</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
             <div class="col-12">
-                <div class="breadcrumb-content text-center">
-                    <h2>Giỏ hàng của bạn</h2>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                            <li class="breadcrumb-item active">Giỏ hàng</li>
-                        </ol>
-                    </nav>
-                </div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+                    </ol>
+                </nav>
             </div>
         </div>
     </div>
-</section>
+</div>
 <!-- Breadcrumb Area End -->
 <!-- Cart Area Start -->
 <section class="cart-area section-padding-100">

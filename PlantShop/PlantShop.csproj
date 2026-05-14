@@ -28,7 +28,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Views\Checkout\" />
+    <Folder Include="Models\Vnpay\" />
+    <Folder Include="Library\" />
     <Folder Include="wwwroot\admin\" />
     <Folder Include="wwwroot\files\" />
     <Folder Include="wwwroot\uploads\" />

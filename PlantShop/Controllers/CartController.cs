@@ -3,16 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using PlantShop.Models;
 using PlantShop;
 using System.Text.Json;
+using PlantShop.Services.VnPay;
 
 namespace PlantShop.Controllers
 {
     public class CartController : Controller
     {
+        private readonly IVnPayService _vnPayService;
         private readonly PlantShopDbContext _context;
         private const string CartSessionKey = "Cart";
 
-        public CartController(PlantShopDbContext context)
+        public CartController(IVnPayService vnPayService, PlantShopDbContext context)
         {
+            _vnPayService = vnPayService;
             _context = context;
         }
 
@@ -158,7 +161,12 @@ namespace PlantShop.Controllers
 
             return View(viewModel);
         }
-
+        [HttpGet]
+        public IActionResult PaymentCallbackVnpay()
+        {
+            var response = _vnPayService.PaymentExecute(Request.Query);
+            return View(response);
+        }
         // Xử lý thanh toán
         [HttpPost]
         [ValidateAntiForgeryToken]

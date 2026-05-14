@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using PlantShop.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using PlantShop.Services.VnPay;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +29,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromDays(1); // Cookie tồn tại 1 ngày
     });
 
-
-var app = builder.Build();
+//connect vnpay API
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 builder.Services.AddHttpContextAccessor();
+var app = builder.Build();
+
 
 
 // Configure the HTTP request pipeline.

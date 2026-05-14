@@ -65,7 +65,21 @@
                                 <option value="false">Ẩn</option>
                             </select>
                         </div>
-
+                        <!-- Hàng 5: Ảnh đại diện (Giống mẫu) -->
+                        <div class="form-group col-md-12">
+                            <label asp-for="Thumbnail" class="control-label">Ảnh video</label>
+                            <div class="input-group mb-6">
+                                <div class="input-group-prepend">
+                                    <button type="button"
+                                            class="btn btn-success btn-image-picker h-100"
+                                            onclick="openDialog()">
+                                        <i class="fa fa-image mr-1"></i> Chọn ảnh
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control" id="file_input" asp-for="Thumbnail" aria-describedby="button-addon2">
+                            </div>
+                            <span asp-validation-for="Thumbnail" class="text-danger"></span>
+                        </div>
                         <div class="form-group col-md-12">
                             <label>Preview video</label>
                             <div class="embed-responsive embed-responsive-16by9" id="videoPreview" style="display: none;">
@@ -103,4 +117,8 @@
             }
         });
     </script>
+}
+@{
+    var summerNote = new PlantShop.Areas.Admin.Models.SummerNote("#Detail");
+    <partial name="_SummerNote" model="summerNote" />
 }
